@@ -1,0 +1,4220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Skyhound — Live Aircraft Overhead, on a Retro LED Board</title>
+<meta name="theme-color" content="#04060a">
+<meta name="description" content="Skyhound shows live aircraft flying near you on a retro split-flap LED display, with callsigns, routes, altitude, speed and an old-school radar view. No account, no tracking — works anywhere in the world from your location.">
+<meta name="keywords" content="live flight tracker, aircraft overhead, planes near me, flight radar, ADS-B tracker, what plane is that, flight board, plane spotting, real-time aircraft, retro flight display">
+<meta name="author" content="Skyhound">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="canonical" href="https://skyhound.netlify.app/">
+
+<!-- Open Graph (link previews on social / chat apps) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Skyhound">
+<meta property="og:title" content="Skyhound — Live Aircraft Overhead">
+<meta property="og:description" content="Watch the planes flying over you on a retro LED board, with a live radar view. If you can hear it, it's probably on here.">
+<meta property="og:url" content="https://skyhound.netlify.app/">
+<meta property="og:image" content="https://skyhound.netlify.app/og.svg">
+<meta property="og:locale" content="en">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Skyhound — Live Aircraft Overhead">
+<meta name="twitter:description" content="Watch the planes flying over you on a retro LED board, with a live radar view. If you can hear it, it's probably on here.">
+<meta name="twitter:image" content="https://skyhound.netlify.app/og.svg">
+
+<!-- GEO: structured data so search + AI engines can describe and cite the app -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Skyhound",
+  "url": "https://skyhound.netlify.app/",
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript and location access",
+  "description": "Skyhound is a free web app that shows live aircraft flying near your location on a retro split-flap LED board. It displays each plane's airline, callsign, origin and destination, aircraft type, altitude, ground speed and vertical rate, and includes an old-school sweeping radar view with the user at the center. Aircraft data comes from open ADS-B networks. No account or sign-up is required and no personal data is tracked.",
+  "featureList": [
+    "Live LED departure-board view of aircraft overhead",
+    "Old-school radar view centered on your location",
+    "Callsign, route, aircraft type, altitude and speed for each flight",
+    "Adjustable search radius from 2 to 250 km",
+    "Altitude colour-coding and sound ping on new contacts",
+    "Works anywhere worldwide from your coordinates"
+  ],
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isAccessibleForFree": true,
+  "inLanguage": "en"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Skyhound?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Skyhound is a free web app that shows the aircraft currently flying near you on a retro LED board and a radar view, including each plane's airline, callsign, route, altitude and speed. It uses open ADS-B flight data and needs no account." }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Skyhound know which planes are overhead?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It uses your device location and queries open ADS-B aircraft networks for transponder broadcasts within a radius you choose (2 to 250 km), then displays each aircraft's live position and details." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Skyhound free and private?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Skyhound is completely free, requires no account, and does not track or store personal data. Your location is used only in your browser to query nearby flights." }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23040608'/%3E%3Cg fill='%2336d07a'%3E%3Ccircle cx='13' cy='13' r='2.4'/%3E%3Ccircle cx='23' cy='13' r='2.4'/%3E%3Ccircle cx='33' cy='13' r='2.4'/%3E%3Ccircle cx='43' cy='13' r='2.4'/%3E%3Ccircle cx='51' cy='13' r='2.4'/%3E%3C/g%3E%3Cpath d='M50 41.5 47 31l4.2-4.2c1.8-1.8 2.4-4 1.7-4.7s-2.9-.1-4.7 1.7L44 28l-10.5-2.6c-.6-.1-1.1.1-1.4.6l-.4.7c-.3.6-.1 1.3.4 1.7L38 33l-2.4 3.7h-3.6l-1.2 1.2 3.6 2.4 2.4 3.6 1.2-1.2v-3.6L42 36.6l4.5 5.5c.4.5 1 .6 1.6.4l.7-.4c.5-.3.8-.8.6-1.4z' fill='%23eef2f6'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23040608'/%3E%3Cg fill='%2336d07a'%3E%3Ccircle cx='13' cy='13' r='2.4'/%3E%3Ccircle cx='23' cy='13' r='2.4'/%3E%3Ccircle cx='33' cy='13' r='2.4'/%3E%3Ccircle cx='43' cy='13' r='2.4'/%3E%3Ccircle cx='51' cy='13' r='2.4'/%3E%3C/g%3E%3Cpath d='M50 41.5 47 31l4.2-4.2c1.8-1.8 2.4-4 1.7-4.7s-2.9-.1-4.7 1.7L44 28l-10.5-2.6c-.6-.1-1.1.1-1.4.6l-.4.7c-.3.6-.1 1.3.4 1.7L38 33l-2.4 3.7h-3.6l-1.2 1.2 3.6 2.4 2.4 3.6 1.2-1.2v-3.6L42 36.6l4.5 5.5c.4.5 1 .6 1.6.4l.7-.4c.5-.3.8-.8.6-1.4z' fill='%23eef2f6'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bezel:#0a0a0c;
+    --bezel-edge:#1c1c20;
+    --board-bg:#040406;
+    --dot-off:rgba(255,255,255,.035);
+    --glow:#fff;
+    --accent:#e8e8e8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  /* SEO/GEO content: present in the DOM for crawlers, hidden from view */
+  .seo-content{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;padding:0;margin:-1px}
+  body{
+    background:#0d0e10;
+    color:#e8e8e8;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    min-height:100dvh;padding:18px;overflow-x:hidden;
+  }
+  /* ---------- physical board ---------- */
+  .stage{width:100%;max-width:560px;display:flex;flex-direction:column;gap:18px}
+  .bezel{
+    background:linear-gradient(145deg,var(--bezel-edge),var(--bezel));
+    border-radius:14px;
+    padding:14px;
+    box-shadow:
+      0 24px 60px rgba(0,0,0,.6),
+      inset 0 1px 0 rgba(255,255,255,.06),
+      inset 0 0 0 1px rgba(0,0,0,.5);
+  }
+  .board{
+    position:relative;
+    width:100%;
+    aspect-ratio:2 / 1;
+    background:var(--board-bg);
+    border-radius:5px;
+    overflow:hidden;
+    /* the dot-matrix grid: every LED cell is a dim dot */
+    background-image:radial-gradient(circle at center, var(--dot-off) 38%, transparent 42%);
+    background-size:var(--cell) var(--cell);
+    --cell:9px;
+    box-shadow:inset 0 0 40px rgba(0,0,0,.9), inset 0 0 4px rgba(0,0,0,1);
+  }
+  .board canvas{
+    position:absolute;inset:0;width:100%;height:100%;
+    image-rendering:pixelated;
+  }
+  .scanlines{
+    position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);
+    mix-blend-mode:multiply;opacity:.5;
+  }
+  /* ---------- controls under board ---------- */
+  .panel{display:flex;flex-direction:column;gap:12px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .status{
+    font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    color:#7f8694;display:flex;align-items:center;gap:7px;flex:1;min-width:160px;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:#3a3f48;flex:none}
+  .dot.live{background:#36d07a;box-shadow:0 0 8px #36d07a}
+  .dot.searching{background:#e6a93b;box-shadow:0 0 8px #e6a93b;animation:pulse 1s infinite}
+  .dot.error{background:#e2553f;box-shadow:0 0 8px #e2553f}
+  @keyframes pulse{50%{opacity:.3}}
+  button{
+    font:inherit;font-size:14px;font-weight:600;color:#0d0e10;
+    background:#e8e8e8;border:none;border-radius:9px;padding:11px 16px;
+    cursor:pointer;transition:transform .08s,background .15s;
+  }
+  button:hover{background:#fff}
+  button:active{transform:scale(.97)}
+  button.ghost{background:transparent;color:#c2c7d0;box-shadow:inset 0 0 0 1px #2a2e36}
+  button.ghost:hover{background:#1a1d22;color:#fff}
+  button.ghost.muted{color:#6a7079;box-shadow:inset 0 0 0 1px #23262d}
+  button:focus-visible{outline:2px solid #6da8ff;outline-offset:2px}
+  .meta{font-size:12px;color:#5d636e;letter-spacing:.04em}
+  .meta b{color:#aeb4be;font-weight:600}
+  .meta a{color:#36d07a;text-decoration:none;font-weight:600;margin-left:4px}
+  .meta a:hover{text-decoration:underline}
+  .tagfoot{font-size:11px;color:#454b54;letter-spacing:.04em;font-style:italic;margin-top:2px}
+  /* ---------- fullscreen ---------- */
+  .stage:fullscreen,.stage.fs{
+    max-width:none;width:100vw;height:100dvh;justify-content:center;
+    padding:max(env(safe-area-inset-top),14px) 14px;background:#000;gap:0;
+  }
+  .stage.fs .panel{display:none}
+  .stage.fs .bezel{
+    max-width:min(96vw, calc((100dvh - 40px) * 2));
+    width:auto;
+  }
+  .stage.fs .exit{
+    display:flex;position:fixed;top:max(env(safe-area-inset-top),16px);right:16px;
+    z-index:10;background:rgba(20,22,26,.7);color:#e8e8e8;backdrop-filter:blur(8px);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+  }
+  .exit{display:none}
+  /* ---------- radar fullscreen ---------- */
+  .radar-screen{
+    display:none;position:fixed;inset:0;background:#02060a;z-index:60;
+    align-items:center;justify-content:center;
+  }
+  .radar-screen.open{display:flex}
+  .radar-screen canvas{
+    width:100%;height:100%;display:block;
+  }
+  .radar-exit{
+    display:flex;position:fixed;top:max(env(safe-area-inset-top),16px);right:16px;z-index:61;
+    background:rgba(10,30,20,.6);color:#7dffb0;backdrop-filter:blur(8px);
+    box-shadow:inset 0 0 0 1px rgba(125,255,176,.25);
+  }
+  /* ---------- landing / setup overlay ---------- */
+  .overlay{
+    position:fixed;inset:0;z-index:50;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(54,208,122,.10), transparent 60%),
+      radial-gradient(900px 500px at 100% 110%, rgba(74,143,226,.10), transparent 55%),
+      #07080b;
+    overflow-y:auto;
+  }
+  .overlay.hidden{display:none}
+  .card{
+    max-width:420px;width:100%;
+    background:linear-gradient(180deg,#16181d,#101216);
+    border-radius:24px;padding:30px 28px 22px;
+    box-shadow:
+      0 40px 100px rgba(0,0,0,.7),
+      0 0 0 1px rgba(255,255,255,.06),
+      inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  /* brand */
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .brand-mark{
+    position:relative;width:52px;height:52px;border-radius:14px;flex:none;
+    background:#040406;display:grid;place-items:center;color:#36d07a;
+    box-shadow:inset 0 0 0 1px rgba(54,208,122,.3), 0 0 24px rgba(54,208,122,.18);
+    overflow:hidden;
+  }
+  .brand-mark .bm-grid{
+    position:absolute;inset:0;
+    background-image:radial-gradient(circle, rgba(54,208,122,.18) 36%, transparent 40%);
+    background-size:6px 6px;opacity:.6;
+  }
+  .brand-mark svg{width:26px;height:26px;position:relative;z-index:1;filter:drop-shadow(0 0 4px rgba(54,208,122,.5))}
+  .brand-text .brandname{font-size:21px;font-weight:750;letter-spacing:-.02em;line-height:1.1}
+  .tagline{font-size:13px;color:#8b92a0;margin-top:3px;line-height:1.3}
+  /* hero board preview */
+  .hero-board{
+    position:relative;width:100%;aspect-ratio:2/1;border-radius:12px;overflow:hidden;
+    background:#040406;margin-bottom:24px;
+    background-image:radial-gradient(circle at center, rgba(255,255,255,.04) 38%, transparent 42%);
+    background-size:7px 7px;
+    box-shadow:inset 0 0 36px rgba(0,0,0,.9), inset 0 0 0 1px rgba(255,255,255,.05);
+  }
+  .hero-board canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
+  .hero-scan{
+    position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px);
+    mix-blend-mode:multiply;opacity:.5;
+  }
+  /* setup controls */
+  .setup{display:flex;flex-direction:column;gap:16px}
+  .field-group{display:flex;flex-direction:column;gap:8px}
+  .lbl{
+    font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    color:#6a7280;padding-left:2px;
+  }
+  .rangepick{display:flex;gap:8px}
+  .rangebtn{
+    flex:1;font:inherit;font-size:15px;font-weight:700;color:#c7ccd5;
+    background:#0c0e12;border:none;border-radius:11px;padding:12px 4px 9px;cursor:pointer;
+    box-shadow:inset 0 0 0 1px #262a32;transition:all .14s;
+    display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1;
+  }
+  .rangebtn span{font-size:10px;font-weight:600;color:#6a7280;letter-spacing:.04em}
+  .rangebtn:hover{color:#fff;background:#15181e;box-shadow:inset 0 0 0 1px #343943}
+  .rangebtn.active{
+    background:linear-gradient(180deg,#39d07f,#2bb86c);color:#04130a;box-shadow:none;
+  }
+  .rangebtn.active span{color:rgba(4,19,10,.65)}
+  .rangebtn-custom{flex:0 0 44px;font-size:18px;letter-spacing:1px;padding-top:9px;padding-bottom:11px}
+  .custom-range{
+    display:none;align-items:center;gap:12px;margin-top:10px;
+    background:#0c0e12;border-radius:11px;padding:12px 14px;box-shadow:inset 0 0 0 1px #262a32;
+  }
+  .custom-range.open{display:flex}
+  .custom-range input[type=range]{
+    flex:1;-webkit-appearance:none;appearance:none;height:5px;border-radius:3px;
+    background:linear-gradient(90deg,#2bb86c var(--pct,20%),#262a32 var(--pct,20%));outline:none;
+  }
+  .custom-range input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;
+    background:#3ad884;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.4),0 0 0 3px rgba(54,208,122,.2);
+  }
+  .custom-range input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;border:none;border-radius:50%;background:#3ad884;cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,.4),0 0 0 3px rgba(54,208,122,.2);
+  }
+  .custom-val{font-size:14px;font-weight:700;color:#eef0f3;white-space:nowrap;min-width:54px;text-align:right}
+  .custom-val span{color:#3ad884}
+  .search-wrap{position:relative;display:flex;align-items:center}
+  .search-icon{
+    position:absolute;left:13px;width:16px;height:16px;color:#5d636e;pointer-events:none;
+  }
+  .field{
+    width:100%;font:inherit;font-size:15px;color:#eef0f3;
+    background:#0c0e12;border:none;border-radius:11px;padding:13px 13px 13px 38px;
+    box-shadow:inset 0 0 0 1px #262a32;transition:box-shadow .15s;
+  }
+  .field::placeholder{color:#5d636e}
+  .field:focus{outline:none;box-shadow:inset 0 0 0 1px #36d07a, 0 0 0 3px rgba(54,208,122,.15)}
+  .keystatus{font-size:12px;min-height:0;letter-spacing:.02em;color:#8b92a0}
+  .keystatus:empty{display:none}
+  .keystatus.ok{color:#36d07a}
+  .keystatus.bad{color:#e2553f}
+  .keystatus.busy{color:#e6a93b}
+  .results{display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto}
+  .results:empty{display:none}
+  .result{
+    padding:11px 13px;border-radius:10px;cursor:pointer;font-size:13px;line-height:1.35;
+    color:#c7ccd5;background:#0c0e12;box-shadow:inset 0 0 0 1px #22262e;transition:all .12s;
+  }
+  .result:hover,.result:focus-visible{background:#15181e;color:#fff;outline:none;box-shadow:inset 0 0 0 1px #36d07a}
+  .result b{color:#eef0f3;font-weight:650;display:block;margin-bottom:1px}
+  .result span{color:#7a818c;font-size:12px}
+  /* buttons */
+  .primary{
+    width:100%;font:inherit;font-size:15px;font-weight:700;color:#04130a;
+    background:linear-gradient(180deg,#3ad884,#2bb86c);border:none;border-radius:12px;
+    padding:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;
+    box-shadow:0 8px 24px rgba(43,184,108,.3);transition:transform .08s,box-shadow .15s;margin-top:2px;
+  }
+  .primary svg{width:18px;height:18px}
+  .primary:hover{box-shadow:0 10px 30px rgba(43,184,108,.42)}
+  .primary:active{transform:scale(.985)}
+  .linkbtn{
+    width:100%;font:inherit;font-size:13px;font-weight:600;color:#8b92a0;
+    background:none;border:none;padding:6px;cursor:pointer;transition:color .12s;
+  }
+  .linkbtn:hover{color:#c7ccd5}
+  .footnote{
+    font-size:11px;color:#565c66;text-align:center;margin-top:18px;letter-spacing:.02em;
+  }
+  button:focus-visible,.rangebtn:focus-visible{outline:2px solid #36d07a;outline-offset:2px}
+</style>
+</head>
+<body>
+
+<!-- Crawlable description for search engines and AI answer engines.
+     Visually hidden; the live app is rendered by JavaScript below. -->
+<main class="seo-content">
+  <h1>Skyhound — live aircraft flying overhead</h1>
+  <p>Skyhound is a free web app that shows the planes currently flying near your location on a retro split-flap LED departure board, plus an old-school sweeping radar view with you at the centre. For each aircraft it shows the airline, callsign, origin and destination airports, aircraft type, altitude, ground speed and climb or descent rate.</p>
+  <h2>How it works</h2>
+  <p>Skyhound uses your device's location and queries open ADS-B aircraft transponder networks for flights within a radius you choose, anywhere from 2 to 250 kilometres. It runs entirely in your browser, needs no account or sign-up, and does not track or store personal data.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Retro LED board that cycles through every aircraft overhead with a smooth marquee.</li>
+    <li>Radar view centred on you, with range rings, a sweeping beam, altitude colour-coding and persistent flight tags.</li>
+    <li>Live callsign, route, aircraft type, altitude, speed and heading for each flight.</li>
+    <li>Adjustable search range, a soft sound ping when new aircraft enter range, and a UTC or local clock.</li>
+    <li>Works worldwide and remembers your location between visits.</li>
+  </ul>
+  <p>If you can hear it, it's probably on here.</p>
+</main>
+
+<div class="stage" id="stage">
+  <button class="exit" id="exitBtn" aria-label="Exit fullscreen">Exit ✕</button>
+  <div class="bezel">
+    <div class="board" id="board">
+      <canvas id="cv" width="128" height="64"></canvas>
+      <div class="scanlines"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="row">
+      <div class="status"><span class="dot" id="dot"></span><span id="statusText">Idle</span></div>
+      <button class="ghost" id="refreshBtn">Refresh</button>
+      <button class="ghost" id="radarBtn">Radar</button>
+      <button class="ghost" id="soundBtn">Sound on</button>
+      <button id="fsBtn">Fullscreen</button>
+    </div>
+    <div class="meta" id="meta">Showing flights within <b>25 km</b> of your location.</div>
+    <div class="tagfoot">If you can hear it, it's probably on here.</div>
+  </div>
+</div>
+
+<div class="radar-screen" id="radarScreen">
+  <canvas id="radarCv"></canvas>
+  <button class="exit radar-exit" id="radarExit" aria-label="Close radar">Close ✕</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="card">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <span class="bm-grid"></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3.5S19 3 17.5 4.5L14 8 5.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 4.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg>
+      </div>
+      <div class="brand-text">
+        <h2 class="brandname">Skyhound</h2>
+        <p class="tagline">Live aircraft overhead, on a retro LED display</p>
+      </div>
+    </div>
+
+    <div class="hero-board" aria-hidden="true">
+      <canvas id="heroCv" width="128" height="64"></canvas>
+      <div class="hero-scan"></div>
+    </div>
+
+    <div class="setup">
+      <div class="field-group">
+        <label class="lbl">Range</label>
+        <div class="rangepick" id="rangePick">
+          <button class="rangebtn" data-km="10">10<span>km</span></button>
+          <button class="rangebtn" data-km="25">25<span>km</span></button>
+          <button class="rangebtn" data-km="50">50<span>km</span></button>
+          <button class="rangebtn" data-km="100">100<span>km</span></button>
+          <button class="rangebtn rangebtn-custom" id="customBtn" title="Custom range">···</button>
+        </div>
+        <div class="custom-range" id="customRange">
+          <input type="range" id="rangeSlider" min="2" max="250" step="1" value="25">
+          <div class="custom-val"><span id="rangeValue">25</span> km</div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="lbl">Location</label>
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input class="field" id="addrInput" type="text" autocomplete="off" placeholder="Search a city or address…">
+        </div>
+        <div class="results" id="addrResults"></div>
+        <div class="keystatus" id="addrStatus"></div>
+      </div>
+
+      <button class="primary" id="locBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/></svg>
+        Use my location
+      </button>
+      <button class="linkbtn" id="manualBtn">Enter coordinates manually</button>
+    </div>
+
+    <p class="footnote">If you can hear it, it's probably on here.<br>No account, no tracking. Data from open ADS-B networks.</p>
+  </div>
+</div>
+
+<script>
+let RADIUS_KM = parseInt(localStorage.getItem('fw_radius') || '25', 10) || 25;
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+ctx.imageSmoothingEnabled = false;
+
+const els = {
+  overlay: document.getElementById('overlay'),
+  heroCv: document.getElementById('heroCv'),
+  locBtn: document.getElementById('locBtn'),
+  manualBtn: document.getElementById('manualBtn'),
+  addrInput: document.getElementById('addrInput'),
+  addrResults: document.getElementById('addrResults'),
+  addrStatus: document.getElementById('addrStatus'),
+  rangePick: document.getElementById('rangePick'),
+  customBtn: document.getElementById('customBtn'),
+  customRange: document.getElementById('customRange'),
+  rangeSlider: document.getElementById('rangeSlider'),
+  rangeValue: document.getElementById('rangeValue'),
+  fsBtn: document.getElementById('fsBtn'),
+  radarBtn: document.getElementById('radarBtn'),
+  soundBtn: document.getElementById('soundBtn'),
+  radarScreen: document.getElementById('radarScreen'),
+  radarExit: document.getElementById('radarExit'),
+  radarCv: document.getElementById('radarCv'),
+  exitBtn: document.getElementById('exitBtn'),
+  refreshBtn: document.getElementById('refreshBtn'),
+  stage: document.getElementById('stage'),
+  board: document.getElementById('board'),
+  dot: document.getElementById('dot'),
+  statusText: document.getElementById('statusText'),
+  meta: document.getElementById('meta'),
+};
+
+let pos = null;        // {lat, lon}
+let flights = [];      // current nearby flights
+let rotIndex = 0;      // which flight is shown
+let pollTimer = null;
+
+/* ============================================================
+   5x7 dot-matrix font — the heart of the LED look
+   ============================================================ */
+const FONT = {
+' ':["00000","00000","00000","00000","00000","00000","00000"],
+'A':["01110","10001","10001","11111","10001","10001","10001"],
+'B':["11110","10001","11110","10001","10001","10001","11110"],
+'C':["01110","10001","10000","10000","10000","10001","01110"],
+'D':["11110","10001","10001","10001","10001","10001","11110"],
+'E':["11111","10000","11110","10000","10000","10000","11111"],
+'F':["11111","10000","11110","10000","10000","10000","10000"],
+'G':["01110","10001","10000","10111","10001","10001","01111"],
+'H':["10001","10001","10001","11111","10001","10001","10001"],
+'I':["01110","00100","00100","00100","00100","00100","01110"],
+'J':["00111","00010","00010","00010","00010","10010","01100"],
+'K':["10001","10010","10100","11000","10100","10010","10001"],
+'L':["10000","10000","10000","10000","10000","10000","11111"],
+'M':["10001","11011","10101","10101","10001","10001","10001"],
+'N':["10001","11001","10101","10011","10001","10001","10001"],
+'O':["01110","10001","10001","10001","10001","10001","01110"],
+'P':["11110","10001","10001","11110","10000","10000","10000"],
+'Q':["01110","10001","10001","10001","10101","10010","01101"],
+'R':["11110","10001","10001","11110","10100","10010","10001"],
+'S':["01111","10000","10000","01110","00001","00001","11110"],
+'T':["11111","00100","00100","00100","00100","00100","00100"],
+'U':["10001","10001","10001","10001","10001","10001","01110"],
+'V':["10001","10001","10001","10001","10001","01010","00100"],
+'W':["10001","10001","10001","10101","10101","11011","10001"],
+'X':["10001","10001","01010","00100","01010","10001","10001"],
+'Y':["10001","10001","01010","00100","00100","00100","00100"],
+'Z':["11111","00001","00010","00100","01000","10000","11111"],
+'0':["01110","10001","10011","10101","11001","10001","01110"],
+'1':["00100","01100","00100","00100","00100","00100","01110"],
+'2':["01110","10001","00001","00110","01000","10000","11111"],
+'3':["11110","00001","00001","01110","00001","00001","11110"],
+'4':["00010","00110","01010","10010","11111","00010","00010"],
+'5':["11111","10000","11110","00001","00001","10001","01110"],
+'6':["00110","01000","10000","11110","10001","10001","01110"],
+'7':["11111","00001","00010","00100","01000","01000","01000"],
+'8':["01110","10001","10001","01110","10001","10001","01110"],
+'9':["01110","10001","10001","01111","00001","00010","01100"],
+'-':["00000","00000","00000","11111","00000","00000","00000"],
+'.':["00000","00000","00000","00000","00000","01100","01100"],
+':':["00000","01100","01100","00000","01100","01100","00000"],
+'/':["00001","00010","00010","00100","01000","01000","10000"],
+'+':["00000","00100","00100","11111","00100","00100","00000"],
+',':["00000","00000","00000","00000","01100","00100","01000"],
+};
+function glyph(c){ return FONT[c] || FONT['?'] || FONT[' ']; }
+
+const CW = 128, CH = 64;          // logical LED pixels
+let drawCtx = ctx;                // px()/clear() target; switchable for the hero preview
+function clear(){ drawCtx.fillStyle = '#040406'; drawCtx.fillRect(0,0,CW,CH); }
+function px(x,y,col){
+  if(x<0||y<0||x>=CW||y>=CH) return;
+  drawCtx.fillStyle = col;
+  drawCtx.fillRect(x|0, y|0, 1, 1);
+}
+// draw text at x,y. Optional clip = [xMin, xMax] limits drawing to that x-range
+// (used for marquee scrolling so text doesn't bleed over the logo/counter).
+function text(str, x, y, col, clip){
+  let cx = x;
+  const xMin = clip ? clip[0] : 0;
+  const xMax = clip ? clip[1] : CW;
+  for(const ch of String(str).toUpperCase()){
+    const g = glyph(ch);
+    for(let r=0;r<7;r++) for(let c=0;c<5;c++){
+      if(g[r][c]==='1'){
+        const xx = cx+c;
+        if(xx >= xMin && xx < xMax) px(xx, y+r, col);
+      }
+    }
+    cx += 6; // 5px glyph + 1px space
+  }
+  return cx;
+}
+function textWidth(str){ return String(str).length * 6; }
+
+// fold accented/extended characters to the ASCII the font supports,
+// so names like "Zürich", "São Paulo", "Loßburg" render instead of blanks.
+const ASCII_MAP = {
+  'À':'A','Á':'A','Â':'A','Ã':'A','Ä':'A','Å':'A','Æ':'AE','Ç':'C',
+  'È':'E','É':'E','Ê':'E','Ë':'E','Ì':'I','Í':'I','Î':'I','Ï':'I',
+  'Ñ':'N','Ò':'O','Ó':'O','Ô':'O','Õ':'O','Ö':'O','Ø':'O','Œ':'OE',
+  'Ù':'U','Ú':'U','Û':'U','Ü':'U','Ý':'Y','ß':'SS','Þ':'TH','Ð':'D',
+  '&':'+','’':"'", "'":"'", '–':'-','—':'-','·':'.','‚':',',
+};
+function ascii(str){
+  return String(str).toUpperCase().replace(/[^\x00-\x7F]|&|[''–—·‚]/g, ch => ASCII_MAP[ch] || '');
+}
+
+// draw a line that scrolls horizontally if it's wider than its window.
+// returns true if it is scrolling (so the caller knows to keep animating).
+function scrollText(str, xStart, y, col, xEnd, phase){
+  const winW = xEnd - xStart;
+  const w = textWidth(str);
+  if(w <= winW){
+    text(str, xStart, y, col, [xStart, xEnd]);
+    return false;
+  }
+  const gap = 18;                 // blank space between repeats
+  const period = w + gap;
+  const off = phase % period;     // 0..period
+  text(str, xStart - off, y, col, [xStart, xEnd]);
+  text(str, xStart - off + period, y, col, [xStart, xEnd]); // wrap copy
+  return true;
+}
+
+/* ---- airline ICAO -> name, brand color, pixel logo key ----
+   Covers most carriers you'll see over Europe + major world airlines. */
+const AIRLINES = {
+  // Legacy / flag carriers with custom logos
+  'DAL':{name:'Delta',col:'#e23b3b',logo:'DAL'},
+  'UAL':{name:'United',col:'#3b6fe2',logo:'UAL'},
+  'AAL':{name:'American',col:'#d4d8e0',logo:'AAL'},
+  'KLM':{name:'KLM',col:'#4a8fe2',logo:'KLM'},
+  'AFR':{name:'Air France',col:'#3b6fe2',logo:'AFR'},
+  'DLH':{name:'Lufthansa',col:'#f5c518',logo:'DLH'},
+  'BAW':{name:'British A/W',col:'#e23b5b',logo:'BAW'},
+  'RYR':{name:'Ryanair',col:'#1f4ed8',logo:'RYR'},
+  'EZY':{name:'easyJet',col:'#f5762e',logo:'EZY'},
+  'EJU':{name:'easyJet',col:'#f5762e',logo:'EZY'},
+  'WZZ':{name:'Wizz Air',col:'#c33be2',logo:'WZZ'},
+  'UAE':{name:'Emirates',col:'#e23b3b',logo:'UAE'},
+  'TRA':{name:'Transavia',col:'#22c36b',logo:'TRA'},
+  'QTR':{name:'Qatar',col:'#8a1538',logo:'QTR'},
+  'THY':{name:'Turkish',col:'#e23b3b',logo:'THY'},
+  // Carriers using brand-colored chevron (no bespoke logo yet)
+  'SWA':{name:'Southwest',col:'#f5a623',logo:'M_WN'},
+  'AUA':{name:'Austrian',col:'#e23b3b',logo:'M_OS'},
+  'VLG':{name:'Vueling',col:'#f5c518',logo:'M_VY'},
+  'IBE':{name:'Iberia',col:'#e23b3b',logo:'M_IB'},
+  'SWR':{name:'SWISS',col:'#e23b3b',logo:'M_LX'},
+  'SAS':{name:'SAS',col:'#3b6fe2',logo:'M_SK'},
+  'TAP':{name:'TAP Air',col:'#22c36b',logo:'M_TP'},
+  'AEE':{name:'Aegean',col:'#3b6fe2',logo:'M_AE'},
+  'FIN':{name:'Finnair',col:'#3b6fe2',logo:'M_AY'},
+  'NAX':{name:'Norwegian',col:'#e23b5b',logo:'M_DY'},
+  'NSZ':{name:'Norwegian',col:'#e23b5b',logo:'M_DY'},
+  'IBK':{name:'Norwegian',col:'#e23b5b',logo:'M_DY'},
+  'LOT':{name:'LOT Polish',col:'#3b6fe2',logo:'M_LO'},
+  'CSA':{name:'Czech A/L',col:'#3b6fe2',logo:'M_OK'},
+  'TVF':{name:'Transavia FR',col:'#22c36b',logo:'TRA'},
+  'TVS':{name:'SmartWings',col:'#3b6fe2',logo:'M_QS'},
+  'EXS':{name:'Jet2',col:'#e2403b',logo:'M_LS'},
+  'TOM':{name:'TUI',col:'#3b6fe2',logo:'M_BY'},
+  'TFL':{name:'TUI fly',col:'#3b6fe2',logo:'M_TU'},
+  'MPH':{name:'Martinair',col:'#3b6fe2',logo:'M_MP'},
+  'CLX':{name:'Cargolux',col:'#e2a93b',logo:'M_CV'},
+  'BCS':{name:'DHL/Eurowings',col:'#f5c518',logo:'M_QY'},
+  'EWG':{name:'Eurowings',col:'#c33be2',logo:'M_EW'},
+  'CFG':{name:'Condor',col:'#f5a623',logo:'M_DE'},
+  'PGT':{name:'Pegasus',col:'#f5762e',logo:'M_PC'},
+  'WMT':{name:'Wizz Malta',col:'#c33be2',logo:'WZZ'},
+  'ELY':{name:'El Al',col:'#3b6fe2',logo:'M_LY'},
+  'ETD':{name:'Etihad',col:'#cdb06a',logo:'M_EY'},
+  'SIA':{name:'Singapore',col:'#e2c43b',logo:'M_SQ'},
+  'CPA':{name:'Cathay',col:'#1f7a5e',logo:'M_CX'},
+  'ANA':{name:'ANA',col:'#3b6fe2',logo:'M_NH'},
+  'JAL':{name:'JAL',col:'#e23b3b',logo:'M_JL'},
+  'ACA':{name:'Air Canada',col:'#e23b3b',logo:'M_AC'},
+  'WJA':{name:'WestJet',col:'#3b6fe2',logo:'M_WS'},
+  'UPS':{name:'UPS',col:'#a5733b',logo:'M_UP'},
+  'FDX':{name:'FedEx',col:'#7a4ae2',logo:'M_FX'},
+  'JBU':{name:'JetBlue',col:'#3b6fe2',logo:'M_JB'},
+  'ASA':{name:'Alaska',col:'#1f7a5e',logo:'M_AS'},
+  'SKW':{name:'SkyWest',col:'#3b6fe2',logo:'M_OO'},
+  'FFT':{name:'Frontier',col:'#22c36b',logo:'M_FR'},
+  'NKS':{name:'Spirit',col:'#f5c518',logo:'M_NK'},
+  'VIR':{name:'Virgin Atl',col:'#e23b5b',logo:'M_VS'},
+  'AMX':{name:'Aeromexico',col:'#3b6fe2',logo:'M_AM'},
+  'QFA':{name:'Qantas',col:'#e23b3b',logo:'M_QF'},
+  'ROU':{name:'Air Canada R',col:'#e23b3b',logo:'M_AC'},
+  'AZA':{name:'ITA Airways',col:'#3b6fe2',logo:'M_AZ'},
+  'ITY':{name:'ITA Airways',col:'#3b6fe2',logo:'M_AZ'},
+  'KLC':{name:'KLM Cityh.',col:'#4a8fe2',logo:'KLM'},
+  'DLH2':{name:'Lufthansa',col:'#f5c518',logo:'DLH'},
+  // more low-cost & European
+  'WUK':{name:'Wizz UK',col:'#c33be2',logo:'WZZ'},
+  'EWE':{name:'Eurowings',col:'#c33be2',logo:'M_EW'},
+  'OCN':{name:'Eurowings D',col:'#c33be2',logo:'M_EW'},
+  'VOE':{name:'Volotea',col:'#22c36b',logo:'M_VO'},
+  'JAF':{name:'TUI fly BE',col:'#3b6fe2',logo:'M_TB'},
+  'BEL':{name:'Brussels A/L',col:'#1f4ed8',logo:'M_SN'},
+  'BTI':{name:'airBaltic',col:'#22c36b',logo:'M_BT'},
+  'LDM':{name:'Lauda',col:'#e23b3b',logo:'M_OE'},
+  'EIN':{name:'Aer Lingus',col:'#1f7a5e',logo:'M_EI'},
+  'ICE':{name:'Icelandair',col:'#3b6fe2',logo:'M_FI'},
+  'WIF':{name:'Widerøe',col:'#1f7a5e',logo:'M_WF'},
+  'DAT':{name:'TUI fly',col:'#3b6fe2',logo:'M_TU'},
+  'EFW':{name:'Eurowings',col:'#c33be2',logo:'M_EW'},
+  'CTN':{name:'Croatia A/L',col:'#3b6fe2',logo:'M_OU'},
+  'ROT':{name:'TAROM',col:'#3b6fe2',logo:'M_RO'},
+  'BGA':{name:'Bulgaria Air',col:'#3b6fe2',logo:'M_FB'},
+  'AEA':{name:'Air Europa',col:'#3b6fe2',logo:'M_UX'},
+  'IBS':{name:'Iberia Exp.',col:'#e23b3b',logo:'M_IB'},
+  'EVE':{name:'Eve Air',col:'#22c36b',logo:'CHEV'},
+  'MSR':{name:'EgyptAir',col:'#3b6fe2',logo:'M_MS'},
+  'RAM':{name:'Royal Air M.',col:'#e23b3b',logo:'M_AT'},
+  'SAA':{name:'South African',col:'#3b6fe2',logo:'M_SA'},
+  'ETH':{name:'Ethiopian',col:'#22c36b',logo:'M_ET'},
+  'KQA':{name:'Kenya A/W',col:'#e23b3b',logo:'M_KQ'},
+  // Middle East & Asia
+  'SVA':{name:'Saudia',col:'#1f7a5e',logo:'M_SV'},
+  'GFA':{name:'Gulf Air',col:'#cdb06a',logo:'M_GF'},
+  'KAC':{name:'Kuwait A/W',col:'#3b6fe2',logo:'M_KU'},
+  'OMA':{name:'Oman Air',col:'#8a1538',logo:'M_WY'},
+  'ABY':{name:'Air Arabia',col:'#e23b3b',logo:'M_AA'},
+  'FDB':{name:'flydubai',col:'#f5762e',logo:'M_FZ'},
+  'IGO':{name:'IndiGo',col:'#3b6fe2',logo:'M_IG'},
+  'AIC':{name:'Air India',col:'#e2403b',logo:'M_AI'},
+  'CCA':{name:'Air China',col:'#e23b3b',logo:'M_CA'},
+  'CES':{name:'China Eastern',col:'#3b6fe2',logo:'M_MU'},
+  'CSN':{name:'China South.',col:'#3b6fe2',logo:'M_CZ'},
+  'KAL':{name:'Korean Air',col:'#3b6fe2',logo:'M_KE'},
+  'AAR':{name:'Asiana',col:'#e23b3b',logo:'M_OZ'},
+  'THA':{name:'Thai A/W',col:'#7a4ae2',logo:'M_TG'},
+  'EVA':{name:'EVA Air',col:'#22c36b',logo:'M_BR'},
+  'MAS':{name:'Malaysia A/L',col:'#3b6fe2',logo:'M_MH'},
+  'GIA':{name:'Garuda',col:'#3b6fe2',logo:'M_GA'},
+  // Americas
+  'DAL2':{name:'Delta',col:'#e23b3b',logo:'DAL'},
+  'AVA':{name:'Avianca',col:'#e23b3b',logo:'M_AV'},
+  'LAN':{name:'LATAM',col:'#3b6fe2',logo:'M_LA'},
+  'TAM':{name:'LATAM Brasil',col:'#3b6fe2',logo:'M_LA'},
+  'AZU':{name:'Azul',col:'#3b6fe2',logo:'M_AD'},
+  'GLO':{name:'GOL',col:'#f5762e',logo:'M_GO'},
+  'CMP':{name:'Copa A/L',col:'#3b6fe2',logo:'M_CM'},
+  'HAL':{name:'Hawaiian',col:'#c33be2',logo:'M_HA'},
+  // Cargo
+  'GTI':{name:'Atlas Air',col:'#3b6fe2',logo:'M_AT'},
+  'GEC':{name:'Lufthansa C.',col:'#f5c518',logo:'M_LH'},
+  'BOX':{name:'AeroLogic',col:'#f5c518',logo:'CHEV'},
+  'CKS':{name:'Kalitta',col:'#3b6fe2',logo:'M_KT'},
+  'ABW':{name:'AirBridge C.',col:'#22c36b',logo:'CHEV'},
+  'QAC':{name:'Qatar Cargo',col:'#8a1538',logo:'QTR'},
+  'UAE2':{name:'Emirates',col:'#e23b3b',logo:'UAE'},
+};
+function airlineFor(callsign){
+  if(!callsign) return null;
+  const code = callsign.trim().slice(0,3).toUpperCase();
+  return AIRLINES[code] ? {code, ...AIRLINES[code]} : {code, name:code, col:'#cdd2da', logo:'CHEV'};
+}
+
+// match an airline NAME (from the route lookup) to a known logo/color.
+// lets us show the right logo even when the callsign prefix isn't mapped.
+const NAME_HINTS = [
+  ['delta','DAL'],['united','UAL'],['american','AAL'],['klm','KLM'],
+  ['air france','AFR'],['lufthansa','DLH'],['british','BAW'],['ryanair','RYR'],
+  ['easyjet','EZY'],['wizz','WZZ'],['emirates','UAE'],['transavia','TRA'],
+  ['qatar','QTR'],['turkish','THY'],
+];
+const NAME_META = { // logo key -> color
+  DAL:'#e23b3b',UAL:'#3b6fe2',AAL:'#d4d8e0',KLM:'#4a8fe2',AFR:'#3b6fe2',
+  DLH:'#f5c518',BAW:'#e23b5b',RYR:'#1f4ed8',EZY:'#f5762e',WZZ:'#c33be2',
+  UAE:'#e23b3b',TRA:'#22c36b',QTR:'#8a1538',THY:'#e23b3b',
+};
+function airlineByName(name){
+  if(!name) return null;
+  const n = name.toLowerCase();
+  for(const [needle, logo] of NAME_HINTS){
+    if(n.includes(needle)) return {name, logo, col: NAME_META[logo] || '#cdd2da'};
+  }
+  return null;
+}
+
+/* ---- 24x24 bold pixel airline logos ----
+   '.' off, '#' accent color, 'o' white highlight  */
+const LOGOS = {
+  DAL:[ // Delta
+    "........................",
+    "...........##...........",
+    "..........####..........",
+    "..........####..........",
+    ".........######.........",
+    ".........######.........",
+    "........########........",
+    "........########........",
+    ".......##########.......",
+    ".......##########.......",
+    "......####....####......",
+    "......####....####......",
+    ".....####......####.....",
+    ".....####......####.....",
+    "....####........####....",
+    "....####........####....",
+    "...####..........####...",
+    "...####..........####...",
+    "..####............####..",
+    "..####............####..",
+    "########################",
+    "########################",
+    "........................",
+    "........................"
+  ],
+  UAL:[ // United globe
+    "........................",
+    "......oooooooooo........",
+    "....oo##########oo......",
+    "...o##############o.....",
+    "..o################o....",
+    ".o##################o...",
+    ".o########o#########o...",
+    "o#########o##########o..",
+    "ooooooooooooooooooooooo.",
+    "o#########o##########o..",
+    "o#########o##########o..",
+    "o#########o##########o..",
+    "ooooooooooooooooooooooo.",
+    "o#########o##########o..",
+    "o#########o##########o..",
+    "o#########o##########o..",
+    "ooooooooooooooooooooooo.",
+    ".o########o#########o...",
+    "..o################o....",
+    "...o##############o.....",
+    "....oo##########oo......",
+    "......oooooooooo........",
+    "........................",
+    "........................"
+  ],
+  AAL:[ // American AA
+    "........................",
+    "........................",
+    "...##..............##...",
+    "..####............####..",
+    "..####............####..",
+    ".######..........######.",
+    "##.###..........###.##..",
+    "##.###..........###.##..",
+    "##.###..........###.##..",
+    "#######........#######..",
+    "#######........#######..",
+    "##...##........##...##..",
+    "##...##........##...##..",
+    "##...##........##...##..",
+    "##...##........##...##..",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  KLM:[ // KLM crown
+    "........................",
+    "........................",
+    "...#....#......#....#...",
+    "...#....##....##....#...",
+    "...#.....#....#.....#...",
+    "...##....##..##....##...",
+    "...##.....#..#.....##...",
+    "...###....####....###...",
+    "....#......##......#....",
+    "....#..............#....",
+    "....#....oooooo....#....",
+    "....#..............#....",
+    "....################....",
+    ".....#............#.....",
+    ".....##..........##.....",
+    ".....##############.....",
+    "......#..........#......",
+    "......############......",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  AFR:[ // Air France
+    "........................",
+    "........................",
+    "...####..........####...",
+    "...####..........####...",
+    "...####..........####...",
+    "...####..........####...",
+    "...####..........####...",
+    "...####..........####...",
+    "...####..........####...",
+    "...####..........####...",
+    "...####..........####...",
+    "...####..........####...",
+    ".....##############.....",
+    "......############......",
+    ".......##########.......",
+    "........########........",
+    ".........######.........",
+    "..........####..........",
+    "...........##...........",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  DLH:[ // Lufthansa LH
+    "........................",
+    "........................",
+    "..##..........####......",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "..##.........######.....",
+    "..##.........######.....",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "..######.....##..##.....",
+    "..######.....##..##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  BAW:[ // British Airways BA
+    "........................",
+    "........................",
+    "..####.......####.......",
+    "..##.##......##.##......",
+    "..##.##......##.##......",
+    "..##.##.....##...##.....",
+    "..####......##...##.....",
+    "..####......##...##.....",
+    "..##.##.....#######.....",
+    "..##.##.....#######.....",
+    "..##.##.....##...##.....",
+    "..####......##...##.....",
+    "..####......##...##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  RYR:[ // Ryanair FR
+    "........................",
+    "........................",
+    "..######.....####.......",
+    "..######.....##.##......",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "..#####......##.##......",
+    "..#####......####.......",
+    "..##.........####.......",
+    "..##.........##.##......",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "..##.........##..##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  EZY:[ // easyJet e
+    "........................",
+    ".......########.........",
+    ".....############.......",
+    "...####oooooo####.......",
+    "..###oo......oo###......",
+    ".###o..........###......",
+    ".##o............##......",
+    "##o..............#......",
+    "##................#.....",
+    "##................#.....",
+    "##.....#######....#.....",
+    "##.....#######....#.....",
+    "##................#.....",
+    "##................#.....",
+    "##o..............#......",
+    ".##o............##......",
+    ".###o..........###......",
+    "..###oo......oo###......",
+    "...####oooooo####.......",
+    ".....############.......",
+    ".......########.........",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  WZZ:[ // Wizz W
+    "........................",
+    "........................",
+    "##..................##..",
+    "##..................##..",
+    "##..................##..",
+    "##..................##..",
+    "##..................##..",
+    "##..................##..",
+    "##.......##.........##..",
+    "##......####........##..",
+    "##......####........##..",
+    "##.....##..##.......##..",
+    "##.....##..##.......##..",
+    "##....##....##......##..",
+    "##....##....##......##..",
+    "##...##......##.....##..",
+    "###..##......##....###..",
+    ".##.##........##..##....",
+    ".#####........#####.....",
+    "..###..........###......",
+    "...#............#.......",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  UAE:[ // Emirates EK
+    "........................",
+    "........................",
+    "..######.....##..##.....",
+    "..######.....##.##......",
+    "..##.........####.......",
+    "..##.........###........",
+    "..#####......####.......",
+    "..#####......####.......",
+    "..##.........###........",
+    "..##.........####.......",
+    "..##.........##.##......",
+    "..######.....##..##.....",
+    "..######.....##..##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  TRA:[ // Transavia wing
+    "........................",
+    "........................",
+    "..##....................",
+    "..####..................",
+    "..######................",
+    "..########..............",
+    "..##########............",
+    "..############..........",
+    "..##############........",
+    "..################......",
+    "..##################....",
+    "..####################..",
+    "..####################..",
+    "..##################....",
+    "..################......",
+    "..##############........",
+    "..############..........",
+    "..##########............",
+    "..########..............",
+    "..######................",
+    "..####..................",
+    "..##....................",
+    "........................",
+    "........................"
+  ],
+  QTR:[ // Qatar QR
+    "........................",
+    "........................",
+    "..######.....####.......",
+    ".##....##....##.##......",
+    ".##....##....##..##.....",
+    "##......##...##..##.....",
+    "##......##...#####......",
+    "##......##...####.......",
+    "##......##...##.##......",
+    "##....#.##...##..##.....",
+    ".##..##.##...##..##.....",
+    "..######.....##..##.....",
+    "....####.#...##..##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  THY:[ // Turkish crescent star
+    "........................",
+    "........................",
+    "......######............",
+    ".....##......##.........",
+    "....##..........#.......",
+    "...##............#......",
+    "..##....................",
+    "..##..........###.......",
+    ".##..........#####......",
+    ".##.........#######.....",
+    "##.........#########....",
+    "##........###########...",
+    "##.........#########....",
+    "##..........#######.....",
+    ".##..........#####......",
+    ".##...........###.......",
+    "..##....................",
+    "..##....................",
+    "...##............#......",
+    "....##..........#.......",
+    ".....##......##.........",
+    "......######............",
+    "........................",
+    "........................"
+  ],
+  CHEV:[ // airplane
+    "........................",
+    "...........##...........",
+    "...........##...........",
+    "..........o##o..........",
+    "..........####..........",
+    "..........####..........",
+    "..........####..........",
+    ".........######.........",
+    ".......##########.......",
+    ".....##############.....",
+    "...##################...",
+    ".######################.",
+    "########################",
+    ".####################...",
+    "...################.....",
+    ".......##########.......",
+    "..........####..........",
+    "..........####..........",
+    "..........####..........",
+    ".........##..##.........",
+    ".......####..####.......",
+    ".....####......####.....",
+    ".....##..........##.....",
+    "........................"
+  ],
+  M_OS:[ // OS
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######......########.",
+    "...######......########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##....######...",
+    ".##......##....######...",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    "...######....########...",
+    "...######....########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_LX:[ // LX
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##............##..##...",
+    ".##............##..##...",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##............##..##...",
+    ".##............##..##...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_SN:[ // SN
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########..##......##.",
+    "...########..##......##.",
+    ".##..........####....##.",
+    ".##..........####....##.",
+    ".##..........##..##..##.",
+    ".##..........##..##..##.",
+    "...######....##....####.",
+    "...######....##....####.",
+    ".........##..##......##.",
+    ".........##..##......##.",
+    ".........##..##......##.",
+    ".........##..##......##.",
+    ".########....##......##.",
+    ".########....##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_EW:[ // EW
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".########....##......##.",
+    ".########....##......##.",
+    ".##..........##..##..##.",
+    ".##..........##..##..##.",
+    ".##..........##..##..##.",
+    ".##..........##..##..##.",
+    ".##..........####..####.",
+    ".##..........####..####.",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_IB:[ // IB
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..########...",
+    ".##########..########...",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......########...",
+    ".....##......########...",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".##########..########...",
+    ".##########..########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_VY:[ // VY
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##....##..##...",
+    ".##......##....##..##...",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    "...##..##........##.....",
+    "...##..##........##.....",
+    ".....##..........##.....",
+    ".....##..........##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_SK:[ // SK
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########..##......##.",
+    "...########..##......##.",
+    ".##..........##....##...",
+    ".##..........##....##...",
+    ".##..........##..##.....",
+    ".##..........##..##.....",
+    "...######....####.......",
+    "...######....####.......",
+    ".........##..##..##.....",
+    ".........##..##..##.....",
+    ".........##..##....##...",
+    ".........##..##....##...",
+    ".########....##......##.",
+    ".########....##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_TP:[ // TP
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..########...",
+    ".##########..########...",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......########...",
+    ".....##......########...",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##.........",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AE:[ // AE
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##########.",
+    "...######....##########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".##########..##.........",
+    ".##########..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##########.",
+    ".##......##..##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AY:[ // AY
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##......##.",
+    "...######....##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##....##..##...",
+    ".##......##....##..##...",
+    ".##########......##.....",
+    ".##########......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_DY:[ // DY
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".########....##......##.",
+    ".########....##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##....##..##...",
+    ".##......##....##..##...",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".########........##.....",
+    ".########........##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_LO:[ // LO
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##............######...",
+    ".##............######...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##########....######...",
+    ".##########....######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_OK:[ // OK
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##......##.",
+    "...######....##......##.",
+    ".##......##..##....##...",
+    ".##......##..##....##...",
+    ".##......##..##..##.....",
+    ".##......##..##..##.....",
+    ".##......##..####.......",
+    ".##......##..####.......",
+    ".##......##..##..##.....",
+    ".##......##..##..##.....",
+    ".##......##..##....##...",
+    ".##......##..##....##...",
+    "...######....##......##.",
+    "...######....##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_QS:[ // QS
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######......########.",
+    "...######......########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##....######...",
+    ".##......##....######...",
+    ".##..##..##..........##.",
+    ".##..##..##..........##.",
+    ".##....##............##.",
+    ".##....##............##.",
+    "...####..##..########...",
+    "...####..##..########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_LS:[ // LS
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##............########.",
+    ".##............########.",
+    ".##..........##.........",
+    ".##..........##.........",
+    ".##..........##.........",
+    ".##..........##.........",
+    ".##............######...",
+    ".##............######...",
+    ".##..................##.",
+    ".##..................##.",
+    ".##..................##.",
+    ".##..................##.",
+    ".##########..########...",
+    ".##########..########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_BY:[ // BY
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".########....##......##.",
+    ".########....##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".########......##..##...",
+    ".########......##..##...",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".########........##.....",
+    ".########........##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_TU:[ // TU
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##........######...",
+    ".....##........######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_TB:[ // TB
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..########...",
+    ".##########..########...",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......########...",
+    ".....##......########...",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......########...",
+    ".....##......########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_MP:[ // MP
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".####..####..##......##.",
+    ".####..####..##......##.",
+    ".##..##..##..##......##.",
+    ".##..##..##..##......##.",
+    ".##..##..##..########...",
+    ".##..##..##..########...",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_CV:[ // CV
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########..##......##.",
+    "...########..##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##............##..##...",
+    ".##............##..##...",
+    "...########......##.....",
+    "...########......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_QY:[ // QY
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##......##.",
+    "...######....##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##....##..##...",
+    ".##......##....##..##...",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##..##..##......##.....",
+    ".##..##..##......##.....",
+    ".##....##........##.....",
+    ".##....##........##.....",
+    "...####..##......##.....",
+    "...####..##......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_DE:[ // DE
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".########....##########.",
+    ".########....##########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".########....##########.",
+    ".########....##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_PC:[ // PC
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".########......########.",
+    ".########......########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".########....##.........",
+    ".########....##.........",
+    ".##..........##.........",
+    ".##..........##.........",
+    ".##..........##.........",
+    ".##..........##.........",
+    ".##............########.",
+    ".##............########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_LY:[ // LY
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##............##..##...",
+    ".##............##..##...",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##########......##.....",
+    ".##########......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_EY:[ // EY
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".########......##..##...",
+    ".########......##..##...",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##########......##.....",
+    ".##########......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_SQ:[ // SQ
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########....######...",
+    "...########....######...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    "...######....##......##.",
+    "...######....##......##.",
+    ".........##..##..##..##.",
+    ".........##..##..##..##.",
+    ".........##..##....##...",
+    ".........##..##....##...",
+    ".########......####..##.",
+    ".########......####..##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_CX:[ // CX
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########..##......##.",
+    "...########..##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##............##..##...",
+    ".##............##..##...",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##............##..##...",
+    ".##............##..##...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    "...########..##......##.",
+    "...########..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_NH:[ // NH
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".####....##..##......##.",
+    ".####....##..##......##.",
+    ".##..##..##..##......##.",
+    ".##..##..##..##......##.",
+    ".##....####..##########.",
+    ".##....####..##########.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_JL:[ // JL
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".....######..##.........",
+    ".....######..##.........",
+    ".......##....##.........",
+    ".......##....##.........",
+    ".......##....##.........",
+    ".......##....##.........",
+    ".......##....##.........",
+    ".......##....##.........",
+    ".......##....##.........",
+    ".......##....##.........",
+    ".##....##....##.........",
+    ".##....##....##.........",
+    "...####......##########.",
+    "...####......##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AC:[ // AC
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######......########.",
+    "...######......########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##########..##.........",
+    ".##########..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##....########.",
+    ".##......##....########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_WS:[ // WS
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##....########.",
+    ".##......##....########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##..##..##....######...",
+    ".##..##..##....######...",
+    ".##..##..##..........##.",
+    ".##..##..##..........##.",
+    ".####..####..........##.",
+    ".####..####..........##.",
+    ".##......##..########...",
+    ".##......##..########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_UP:[ // UP
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    "...######....##.........",
+    "...######....##.........",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_FX:[ // FX
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".########......##..##...",
+    ".########......##..##...",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##............##..##...",
+    ".##............##..##...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_JB:[ // JB
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".....######..########...",
+    ".....######..########...",
+    ".......##....##......##.",
+    ".......##....##......##.",
+    ".......##....########...",
+    ".......##....########...",
+    ".......##....##......##.",
+    ".......##....##......##.",
+    ".......##....##......##.",
+    ".......##....##......##.",
+    ".##....##....##......##.",
+    ".##....##....##......##.",
+    "...####......########...",
+    "...####......########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AS:[ // AS
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######......########.",
+    "...######......########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##########....######...",
+    ".##########....######...",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##..########...",
+    ".##......##..########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_OO:[ // OO
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######......######...",
+    "...######......######...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "...######......######...",
+    "...######......######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_FR:[ // FR
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..########...",
+    ".##########..########...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".########....##......##.",
+    ".########....##......##.",
+    ".##..........########...",
+    ".##..........########...",
+    ".##..........##..##.....",
+    ".##..........##..##.....",
+    ".##..........##....##...",
+    ".##..........##....##...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_NK:[ // NK
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".####....##..##....##...",
+    ".####....##..##....##...",
+    ".##..##..##..##..##.....",
+    ".##..##..##..##..##.....",
+    ".##....####..####.......",
+    ".##....####..####.......",
+    ".##......##..##..##.....",
+    ".##......##..##..##.....",
+    ".##......##..##....##...",
+    ".##......##..##....##...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_VS:[ // VS
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##....########.",
+    ".##......##....########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##....######...",
+    ".##......##....######...",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    "...##..##............##.",
+    "...##..##............##.",
+    ".....##......########...",
+    ".....##......########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AM:[ // AM
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##......##.",
+    "...######....##......##.",
+    ".##......##..####..####.",
+    ".##......##..####..####.",
+    ".##......##..##..##..##.",
+    ".##......##..##..##..##.",
+    ".##########..##..##..##.",
+    ".##########..##..##..##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_QF:[ // QF
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##########.",
+    "...######....##########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##..##..##..##.........",
+    ".##..##..##..##.........",
+    ".##....##....##.........",
+    ".##....##....##.........",
+    "...####..##..##.........",
+    "...####..##..##.........",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AZ:[ // AZ
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##########.",
+    "...######....##########.",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##........##...",
+    ".##......##........##...",
+    ".##########......##.....",
+    ".##########......##.....",
+    ".##......##....##.......",
+    ".##......##....##.......",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##########.",
+    ".##......##..##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_VO:[ // VO
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##....######...",
+    ".##......##....######...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "...##..##....##......##.",
+    "...##..##....##......##.",
+    ".....##........######...",
+    ".....##........######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_BT:[ // BT
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".########....##########.",
+    ".########....##########.",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".########........##.....",
+    ".########........##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".########........##.....",
+    ".########........##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_OE:[ // OE
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##########.",
+    "...######....##########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    "...######....##########.",
+    "...######....##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_EI:[ // EI
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..##########.",
+    ".##########..##########.",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".########........##.....",
+    ".########........##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##########..##########.",
+    ".##########..##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_FI:[ // FI
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..##########.",
+    ".##########..##########.",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".########........##.....",
+    ".########........##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..........##########.",
+    ".##..........##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_WF:[ // WF
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##########.",
+    ".##......##..##########.",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".##..##..##..##.........",
+    ".##..##..##..##.........",
+    ".##..##..##..##.........",
+    ".##..##..##..##.........",
+    ".####..####..##.........",
+    ".####..####..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_OU:[ // OU
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##......##.",
+    "...######....##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "...######......######...",
+    "...######......######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_RO:[ // RO
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".########......######...",
+    ".########......######...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".########....##......##.",
+    ".########....##......##.",
+    ".##..##......##......##.",
+    ".##..##......##......##.",
+    ".##....##....##......##.",
+    ".##....##....##......##.",
+    ".##......##....######...",
+    ".##......##....######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_FB:[ // FB
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..########...",
+    ".##########..########...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".########....########...",
+    ".########....########...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........########...",
+    ".##..........########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_UX:[ // UX
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##....##..##...",
+    ".##......##....##..##...",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##....##..##...",
+    ".##......##....##..##...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "...######....##......##.",
+    "...######....##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_MS:[ // MS
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##....########.",
+    ".##......##....########.",
+    ".####..####..##.........",
+    ".####..####..##.........",
+    ".##..##..##..##.........",
+    ".##..##..##..##.........",
+    ".##..##..##....######...",
+    ".##..##..##....######...",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##..########...",
+    ".##......##..########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AT:[ // AT
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##########.",
+    "...######....##########.",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##########......##.....",
+    ".##########......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_SA:[ // SA
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########....######...",
+    "...########....######...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    "...######....##########.",
+    "...######....##########.",
+    ".........##..##......##.",
+    ".........##..##......##.",
+    ".........##..##......##.",
+    ".........##..##......##.",
+    ".########....##......##.",
+    ".########....##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_ET:[ // ET
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..##########.",
+    ".##########..##########.",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".########........##.....",
+    ".########........##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##########......##.....",
+    ".##########......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_KQ:[ // KQ
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##....######...",
+    ".##......##....######...",
+    ".##....##....##......##.",
+    ".##....##....##......##.",
+    ".##..##......##......##.",
+    ".##..##......##......##.",
+    ".####........##......##.",
+    ".####........##......##.",
+    ".##..##......##..##..##.",
+    ".##..##......##..##..##.",
+    ".##....##....##....##...",
+    ".##....##....##....##...",
+    ".##......##....####..##.",
+    ".##......##....####..##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_SV:[ // SV
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########..##......##.",
+    "...########..##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    "...######....##......##.",
+    "...######....##......##.",
+    ".........##..##......##.",
+    ".........##..##......##.",
+    ".........##....##..##...",
+    ".........##....##..##...",
+    ".########........##.....",
+    ".########........##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_GF:[ // GF
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########..##########.",
+    "...########..##########.",
+    ".##..........##.........",
+    ".##..........##.........",
+    ".##..........########...",
+    ".##..........########...",
+    ".##..######..##.........",
+    ".##..######..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    "...########..##.........",
+    "...########..##.........",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_KU:[ // KU
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##....##....##......##.",
+    ".##....##....##......##.",
+    ".##..##......##......##.",
+    ".##..##......##......##.",
+    ".####........##......##.",
+    ".####........##......##.",
+    ".##..##......##......##.",
+    ".##..##......##......##.",
+    ".##....##....##......##.",
+    ".##....##....##......##.",
+    ".##......##....######...",
+    ".##......##....######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_WY:[ // WY
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##....##..##...",
+    ".##......##....##..##...",
+    ".##..##..##......##.....",
+    ".##..##..##......##.....",
+    ".##..##..##......##.....",
+    ".##..##..##......##.....",
+    ".####..####......##.....",
+    ".####..####......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AA:[ // AA
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######......######...",
+    "...######......######...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##########..##########.",
+    ".##########..##########.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_FZ:[ // FZ
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########..##########.",
+    ".##########..##########.",
+    ".##..................##.",
+    ".##..................##.",
+    ".########..........##...",
+    ".########..........##...",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##............##.......",
+    ".##............##.......",
+    ".##..........##.........",
+    ".##..........##.........",
+    ".##..........##########.",
+    ".##..........##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_IG:[ // IG
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########....########.",
+    ".##########....########.",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##..######.",
+    ".....##......##..######.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".##########....########.",
+    ".##########....########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AI:[ // AI
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##########.",
+    "...######....##########.",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##########......##.....",
+    ".##########......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##..##########.",
+    ".##......##..##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_CA:[ // CA
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########....######...",
+    "...########....######...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##########.",
+    ".##..........##########.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    "...########..##......##.",
+    "...########..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_MU:[ // MU
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".####..####..##......##.",
+    ".####..####..##......##.",
+    ".##..##..##..##......##.",
+    ".##..##..##..##......##.",
+    ".##..##..##..##......##.",
+    ".##..##..##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##....######...",
+    ".##......##....######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_CZ:[ // CZ
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########..##########.",
+    "...########..##########.",
+    ".##..................##.",
+    ".##..................##.",
+    ".##................##...",
+    ".##................##...",
+    ".##..............##.....",
+    ".##..............##.....",
+    ".##............##.......",
+    ".##............##.......",
+    ".##..........##.........",
+    ".##..........##.........",
+    "...########..##########.",
+    "...########..##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_KE:[ // KE
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##########.",
+    ".##......##..##########.",
+    ".##....##....##.........",
+    ".##....##....##.........",
+    ".##..##......########...",
+    ".##..##......########...",
+    ".####........##.........",
+    ".####........##.........",
+    ".##..##......##.........",
+    ".##..##......##.........",
+    ".##....##....##.........",
+    ".##....##....##.........",
+    ".##......##..##########.",
+    ".##......##..##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_OZ:[ // OZ
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##########.",
+    "...######....##########.",
+    ".##......##..........##.",
+    ".##......##..........##.",
+    ".##......##........##...",
+    ".##......##........##...",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    ".##......##....##.......",
+    ".##......##....##.......",
+    ".##......##..##.........",
+    ".##......##..##.........",
+    "...######....##########.",
+    "...######....##########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_TG:[ // TG
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##########....########.",
+    ".##########....########.",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##.........",
+    ".....##......##..######.",
+    ".....##......##..######.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##......##......##.",
+    ".....##........########.",
+    ".....##........########.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_BR:[ // BR
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".########....########...",
+    ".########....########...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".########....##......##.",
+    ".########....##......##.",
+    ".##......##..########...",
+    ".##......##..########...",
+    ".##......##..##..##.....",
+    ".##......##..##..##.....",
+    ".##......##..##....##...",
+    ".##......##..##....##...",
+    ".########....##......##.",
+    ".########....##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_MH:[ // MH
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".####..####..##......##.",
+    ".####..####..##......##.",
+    ".##..##..##..##......##.",
+    ".##..##..##..##......##.",
+    ".##..##..##..##########.",
+    ".##..##..##..##########.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_GA:[ // GA
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########....######...",
+    "...########....######...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..######..##########.",
+    ".##..######..##########.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "...########..##......##.",
+    "...########..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AV:[ // AV
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....##......##.",
+    "...######....##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##....##..##...",
+    ".##......##....##..##...",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_LA:[ // LA
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##............######...",
+    ".##............######...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##########.",
+    ".##..........##########.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_AD:[ // AD
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...######....########...",
+    "...######....########...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..########...",
+    ".##......##..########...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_GO:[ // GO
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########....######...",
+    "...########....######...",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..######..##......##.",
+    ".##..######..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "...########....######...",
+    "...########....######...",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_CM:[ // CM
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "...########..##......##.",
+    "...########..##......##.",
+    ".##..........####..####.",
+    ".##..........####..####.",
+    ".##..........##..##..##.",
+    ".##..........##..##..##.",
+    ".##..........##..##..##.",
+    ".##..........##..##..##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    "...########..##......##.",
+    "...########..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_HA:[ // HA
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##....######...",
+    ".##......##....######...",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##########..##########.",
+    ".##########..##########.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_LH:[ // LH
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##########.",
+    ".##..........##########.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##..........##......##.",
+    ".##########..##......##.",
+    ".##########..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_KT:[ // KT
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##########.",
+    ".##......##..##########.",
+    ".##....##........##.....",
+    ".##....##........##.....",
+    ".##..##..........##.....",
+    ".##..##..........##.....",
+    ".####............##.....",
+    ".####............##.....",
+    ".##..##..........##.....",
+    ".##..##..........##.....",
+    ".##....##........##.....",
+    ".##....##........##.....",
+    ".##......##......##.....",
+    ".##......##......##.....",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ],
+  M_WN:[ // WN
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    ".##......##..####....##.",
+    ".##......##..####....##.",
+    ".##......##..##..##..##.",
+    ".##......##..##..##..##.",
+    ".##..##..##..##....####.",
+    ".##..##..##..##....####.",
+    ".##..##..##..##......##.",
+    ".##..##..##..##......##.",
+    ".####..####..##......##.",
+    ".####..####..##......##.",
+    ".##......##..##......##.",
+    ".##......##..##......##.",
+    "........................",
+    "........................",
+    "........................",
+    "........................",
+    "........................"
+  ]
+};
+
+// draw a 24x24 pixel logo at x,y. accent = '#' color, white = 'o'
+function drawLogo(key, x, y, accent){
+  const rows = LOGOS[key] || LOGOS.CHEV;
+  for(let r=0;r<rows.length;r++){
+    const row = rows[r];
+    for(let c=0;c<row.length;c++){
+      const ch = row[c];
+      if(ch === '#') px(x+c, y+r, accent);
+      else if(ch === 'o') px(x+c, y+r, '#f2f4f8');
+    }
+  }
+}
+
+/* ============================================================
+   render a single flight onto the board
+   ============================================================ */
+// dim a hex color by alpha (0..1) toward black, for crossfading
+function dim(hex, a){
+  if(a >= 1) return hex;
+  const h = hex.replace('#','');
+  const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+  const f = Math.max(0, Math.min(1, a));
+  const to = v => Math.round(v*f).toString(16).padStart(2,'0');
+  return `#${to(r)}${to(g)}${to(b)}`;
+}
+
+// draw one flight frame. phase = scroll offset in px, alpha = 0..1 for fades.
+// returns true if any line is actively scrolling (caller keeps animating).
+function drawFlightFrame(f, phase, alpha){
+  clear();
+  if(alpha <= 0) return false;
+  const al = airlineFor(f.callsign);
+  const byName = (f.route && f.route.airline) ? airlineByName(f.route.airline) : null;
+  const chosen = (al && al.logo !== 'CHEV') ? al : (byName || al);
+  const accent = dim(chosen ? chosen.col : '#ffffff', alpha);
+  const white  = dim('#ffffff', alpha);   // route line — bright white
+  const grey   = dim('#b8bdc7', alpha);   // type/distance — soft grey
+  const data   = dim('#ffffff', alpha);   // metric lines — bright white
+  const faint  = dim('#6a7079', alpha);   // counter
+
+  drawLogo(chosen ? chosen.logo : 'CHEV', 2, 4, accent);
+
+  const tx = 30;
+  // counter (top-right) reserves space on line 1
+  let line1End = CW;
+  if(flights.length>1){
+    const tag = `${rotIndex+1}/${flights.length}`;
+    text(tag, CW - textWidth(tag) - 2, 3, faint);
+    line1End = CW - textWidth(tag) - 8;
+  }
+
+  // line 1: FULL airline name (scrolls if too long)
+  const name = ascii((f.route && f.route.airline) ? f.route.airline : (chosen ? chosen.name : (f.callsign||'UNKNOWN')));
+  let scrolling = false;
+  scrolling = scrollText(name, tx, 3, accent, line1End, phase) || scrolling;
+
+  // line 2: route origin-destination, else callsign
+  let line2;
+  if(f.route && (f.route.origin || f.route.dest)){
+    line2 = `${f.route.origin||'???'}-${f.route.dest||'???'}`;
+  }else{
+    line2 = (f.callsign||'').trim() || (f.icao||'').toUpperCase();
+  }
+  scrolling = scrollText(ascii(line2), tx, 13, white, CW, phase) || scrolling;
+
+  // line 3: aircraft type + distance
+  const dkm = f._d != null ? Math.round(f._d) + 'KM' : '';
+  scrolling = scrollText(ascii(`${f.type||'----'} ${dkm}`.trim()), tx, 23, grey, CW, phase) || scrolling;
+
+  // metric data lines — compact so they always fit 128px (max ~21 chars)
+  const altM = f.alt!=null ? Math.round(f.alt*0.3048) : null;
+  const kmh  = f.gs!=null ? Math.round(f.gs*1.852) : null;
+  const trk  = f.heading!=null ? compass(f.heading) : '--';
+  const vms  = f.vrate!=null ? (f.vrate>=0?'+':'') + (f.vrate*0.00508).toFixed(1) : '0';
+  // altitude in km with one decimal keeps width fixed even at high values
+  const altTxt = altM!=null ? (altM>=1000 ? (altM/1000).toFixed(1)+'KM' : altM+'M') : '--';
+  text(`A:${altTxt} S:${kmh!=null?kmh:'--'}KMH`, 3, 44, data, [0, CW]);
+  text(`TRK:${trk} VS:${vms}M/S`, 3, 54, data, [0, CW]);
+
+  return scrolling;
+}
+
+function compass(deg){
+  const d=['N','NE','E','SE','S','SW','W','NW'];
+  return d[Math.round(deg/45)%8];
+}
+
+function renderMessage(lines, col){
+  clear();
+  col = col || '#cdd2da';
+  const startY = Math.max(0,(CH - lines.length*10)/2)|0;
+  lines.forEach((l,i)=>{
+    const w = l.length*6;
+    text(l, Math.max(0,(CW-w)/2)|0, startY+i*10, col);
+  });
+}
+
+/* ============================================================
+   data fetching — adsb.lol public API (no key required)
+   ============================================================ */
+function distKm(a,b,c,d){
+  const R=6371,toR=x=>x*Math.PI/180;
+  const dLat=toR(c-a),dLon=toR(d-b);
+  const s=Math.sin(dLat/2)**2+Math.cos(toR(a))*Math.cos(toR(c))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(s));
+}
+
+// keep only genuine aircraft — drop ground towers, vehicles, and test beacons
+// that appear in the ADS-B feed (e.g. type "TWR", category C0-C7).
+function isRealAircraft(f){
+  const t = (f.type || '').toUpperCase();
+  const reg = (f.reg || '').toUpperCase();
+  // ground service markers
+  if(t === 'TWR' || t === 'GND' || reg === 'TWR' || reg === 'GND') return false;
+  // ADS-B emitter categories: A0-A7 = aircraft, C0-C7 = ground vehicles/obstacles
+  if(f.cat && /^C/.test(f.cat)) return false;
+  // all-zero / blank icao test signals
+  if(/^0+$/.test(f.icao || '')) return false;
+  return true;
+}
+
+let fetchInFlight = false;
+async function fetchFlights(){
+  if(!pos || fetchInFlight) return;
+  fetchInFlight = true;
+  setStatus('searching','Scanning the sky…');
+  // adsb.lol takes a radius in nautical miles; convert from km
+  const nm = Math.min(250, Math.round(RADIUS_KM / 1.852));
+  // call our own Netlify function (same origin) which proxies adsb.lol —
+  // the direct API has no CORS header so the browser can't call it directly
+  const url = `/api/flights/${pos.lat.toFixed(4)}/${pos.lon.toFixed(4)}/${nm}`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(()=>ctrl.abort(), 9000); // don't hang on a stalled request
+  try{
+    const res = await fetch(url, {signal: ctrl.signal});
+    if(res.status === 429){
+      setStatus('error','Busy — retrying shortly');
+      if(flights.length===0) renderMessage(['BUSY','RETRYING'], '#e6a93b');
+      return;
+    }
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const ac = data.ac || [];
+    const list = ac.map(a=>({
+      icao: a.hex,
+      callsign: (a.flight || '').trim(),
+      type: a.t || null,                                  // aircraft type, e.g. B738
+      reg: a.r || null,                                   // registration
+      cat: a.category || null,                            // A0-A7 aircraft, C0-C7 ground
+      lat: a.lat, lon: a.lon,
+      alt: a.alt_baro === 'ground' ? null : a.alt_baro,   // feet
+      onground: a.alt_baro === 'ground',
+      gs: typeof a.gs === 'number' ? a.gs : null,         // ground speed, knots
+      heading: a.track != null ? a.track : a.true_heading,
+      vrate: a.baro_rate != null ? a.baro_rate : a.geom_rate, // ft/min
+      _d: a.dst != null ? a.dst * 1.852 : null,           // nm -> km
+    }))
+    .filter(f=>f.lat!=null && f.lon!=null && !f.onground && (f.callsign || f.icao))
+    .filter(isRealAircraft)
+    .map(f=>({...f, _d: f._d != null ? f._d : distKm(pos.lat,pos.lon,f.lat,f.lon)}))
+    .map(f=>{
+      // carry over an already-known route so re-polls don't lose it
+      const cs = (f.callsign||'').trim().toUpperCase();
+      if(cs && routeCache.has(cs)) f.route = routeCache.get(cs);
+      return f;
+    })
+    .sort((a,b)=>a._d-b._d);
+
+    flights = list;
+    // detect newly-arrived aircraft (in range now, not in the previous poll) -> ping
+    const nowIds = new Set(flights.map(f=>f.icao));
+    if(prevIcaoSet){
+      let newCount = 0;
+      for(const id of nowIds){ if(!prevIcaoSet.has(id)) newCount++; }
+      if(newCount > 0) pingNewContact(newCount);
+    }
+    prevIcaoSet = nowIds;
+    if(flights.length===0){
+      setStatus('live','No flights in range');
+      stopLoop();
+      renderMessage(['NO FLIGHTS','IN RANGE'], '#e6a93b');
+      shownIcao = null;
+    }else{
+      setStatus('live', `${flights.length} flight${flights.length>1?'s':''} in range`);
+      // keep showing the same aircraft across polls if it's still in range
+      const keepIdx = shownIcao ? flights.findIndex(f=>f.icao===shownIcao) : -1;
+      if(keepIdx >= 0){
+        rotIndex = keepIdx;            // stay on the current plane, no jump
+        ensureRoute(flights[rotIndex]);
+      }else{
+        rotIndex = rotIndex % flights.length;
+        shownIcao = flights[rotIndex].icao;
+        scrollPhase = 0; dwellMs = 0;
+        ensureRoute(flights[rotIndex]);
+      }
+      startLoop();                     // (re)start the render loop
+    }
+  }catch(err){
+    // ignore intentional aborts; surface real failures
+    if(err.name !== 'AbortError') console.error(err);
+    setStatus('error','Connection issue — retrying');
+    // keep the last good board if we have one; only show the error screen cold
+    if(flights.length===0){ stopLoop(); renderMessage(['SIGNAL','LOST'], '#e2553f'); }
+  }finally{
+    clearTimeout(timer);
+    fetchInFlight = false;
+  }
+}
+
+/* route lookup cache: callsign -> {origin,dest,...} or null */
+const routeCache = new Map();
+let shownIcao = null; // hex of the aircraft currently on screen
+
+async function lookupRoute(callsign, lat, lon){
+  const cs = (callsign||'').trim().toUpperCase();
+  if(!cs) return null;
+  if(routeCache.has(cs)) return routeCache.get(cs);
+  try{
+    const q = (lat!=null && lon!=null) ? `?lat=${lat.toFixed(3)}&lon=${lon.toFixed(3)}` : '';
+    const r = await fetch(`/api/route/${encodeURIComponent(cs)}${q}`);
+    const data = await r.json();
+    routeCache.set(cs, data.route || null);
+    return data.route || null;
+  }catch(e){
+    return null; // don't cache transient failures
+  }
+}
+
+// fetch the route for a flight (if not already known)
+function ensureRoute(f){
+  if(f.route !== undefined || !f.callsign) return;
+  lookupRoute(f.callsign, f.lat, f.lon).then(route=>{ f.route = route; });
+}
+
+/* ============================================================
+   animation loop — drives marquee scroll, crossfade, rotation
+   ============================================================ */
+let scrollPhase = 0;       // px the long lines have scrolled
+let rafId = null;
+let lastTs = 0;
+let dwellMs = 0;           // how long current flight has been shown
+let fadeMs = 0;           // crossfade progress (0..FADE_DUR while fading)
+let fading = false;       // currently crossfading to nextIndex
+let nextIndex = 0;
+let viewMode = 'board';   // 'board' = LED panel, 'radar' = sweep view
+let sweepAngle = 0;       // radar sweep position, radians
+let clockUTC = localStorage.getItem('fw_clock') === 'utc'; // radar clock mode
+let clockHit = null;      // hit box for tapping the clock to toggle UTC/local
+
+const DWELL = 6000;        // ms per flight before auto-advance
+const FADE_DUR = 450;      // ms crossfade
+const SCROLL_PXPS = 26;    // marquee speed (px per second)
+const SWEEP_RPS = 0.35;    // radar sweeps per second
+
+function currentFlight(){ return flights[rotIndex]; }
+
+function showFlight(f){
+  shownIcao = f.icao;
+  scrollPhase = 0;
+  dwellMs = 0;
+  ensureRoute(f);
+  startLoop();
+}
+
+function startLoop(){
+  if(rafId) return;
+  lastTs = performance.now();
+  rafId = requestAnimationFrame(loop);
+}
+function stopLoop(){ if(rafId){ cancelAnimationFrame(rafId); rafId=null; } }
+
+function loop(ts){
+  const dt = Math.min(100, ts - lastTs); // clamp if tab was backgrounded
+  lastTs = ts;
+
+  if(viewMode === 'radar'){
+    sweepAngle = (sweepAngle + SWEEP_RPS * 2 * Math.PI * dt / 1000) % (2*Math.PI);
+    drawRadarFrame();
+    rafId = requestAnimationFrame(loop); // radar always animates
+    return;
+  }
+
+  // ---- board mode ----
+  if(flights.length === 0){ rafId = null; return; }
+  if(rotIndex >= flights.length) rotIndex = 0;
+
+  const f = currentFlight();
+  if(!f){ rafId = null; return; }
+
+  ensureRoute(f);
+  scrollPhase += (SCROLL_PXPS * dt) / 1000;
+
+  let scrolling;
+  if(fading && flights.length > 1){
+    fadeMs += dt;
+    const t = Math.min(1, fadeMs / FADE_DUR);
+    if(t < 0.5){
+      drawFlightFrame(f, scrollPhase, 1 - t*2);
+    }else{
+      if(nextIndex >= flights.length) nextIndex = 0;
+      if(rotIndex !== nextIndex){
+        rotIndex = nextIndex;
+        shownIcao = flights[rotIndex] && flights[rotIndex].icao;
+        scrollPhase = 0;
+      }
+      const nf = currentFlight();
+      if(nf) drawFlightFrame(nf, scrollPhase, (t-0.5)*2);
+    }
+    if(t >= 1){ fading = false; fadeMs = 0; dwellMs = 0; }
+    scrolling = true;
+  }else{
+    fading = false;
+    scrolling = drawFlightFrame(f, scrollPhase, 1);
+    if(flights.length > 1){
+      dwellMs += dt;
+      if(dwellMs >= DWELL){
+        nextIndex = (rotIndex + 1) % flights.length;
+        fading = true; fadeMs = 0;
+      }
+    }
+  }
+
+  if(scrolling || fading || flights.length > 1){
+    rafId = requestAnimationFrame(loop);
+  }else{
+    rafId = null; // idle — static frame already painted
+  }
+}
+
+/* polling refreshes data; the loop keeps running independently */
+function startPolling(){
+  shownIcao = null;
+  prevIcaoSet = null; // reset so the first poll after a (re)start doesn't ping for everything
+  fetchFlights();
+  if(pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(fetchFlights, 12000);
+}
+
+/* ---- sound ping when a new aircraft enters range ---- */
+let prevIcaoSet = null;
+let soundOn = (localStorage.getItem('fw_sound') ?? 'on') === 'on';
+let audioCtx = null;
+function pingNewContact(count){
+  if(!soundOn) return;
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    const t = audioCtx.currentTime;
+    // soft two-tone radar blip
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, t);
+    osc.frequency.exponentialRampToValueAtTime(1320, t + 0.08);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.12, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.35);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t);
+    osc.stop(t + 0.4);
+  }catch(e){ /* audio unavailable */ }
+}
+function setSound(on){
+  soundOn = on;
+  localStorage.setItem('fw_sound', on ? 'on' : 'off');
+  if(els.soundBtn){
+    els.soundBtn.textContent = on ? 'Sound on' : 'Sound off';
+    els.soundBtn.classList.toggle('muted', !on);
+  }
+  // resume/unlock audio on the user gesture that turned it on
+  if(on){ try{ audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)(); audioCtx.resume(); }catch(e){} }
+}
+
+
+/* ============================================================
+   status + location
+   ============================================================ */
+function setStatus(kind, msg){
+  els.dot.className = 'dot ' + kind;
+  els.statusText.textContent = msg;
+}
+let lastLabel = null;
+function start(lat, lon, label){
+  pos = {lat, lon};
+  lastLabel = label || `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
+  // remember for next visit
+  try{ localStorage.setItem('fw_loc', JSON.stringify({lat, lon, label: lastLabel})); }catch(e){}
+  els.overlay.classList.add('hidden');
+  stopHero();
+  updateMeta();
+  startPolling();
+}
+function updateMeta(){
+  if(!lastLabel) return;
+  els.meta.innerHTML = `Within <b>${RADIUS_KM} km</b> of ${escapeHtml(lastLabel)}. <a href="#" id="changeLoc">Change</a>`;
+  const cl = document.getElementById('changeLoc');
+  if(cl) cl.addEventListener('click', (e)=>{ e.preventDefault(); reopenSetup(); });
+}
+function reopenSetup(){
+  els.overlay.classList.remove('hidden');
+  els.locBtn.textContent = 'Use my location';
+  startHero();
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+/* ---- range picker ---- */
+const PRESETS = [10,25,50,100];
+function setRange(km, fromSlider){
+  km = Math.max(2, Math.min(250, Math.round(km)));
+  RADIUS_KM = km;
+  localStorage.setItem('fw_radius', String(km));
+  const isPreset = PRESETS.includes(km);
+  els.rangePick.querySelectorAll('.rangebtn').forEach(b=>{
+    if(b.id === 'customBtn') b.classList.toggle('active', !isPreset);
+    else b.classList.toggle('active', Number(b.dataset.km) === km);
+  });
+  // keep slider + readout in sync
+  els.rangeSlider.value = km;
+  els.rangeValue.textContent = km;
+  const pct = ((km - els.rangeSlider.min) / (els.rangeSlider.max - els.rangeSlider.min)) * 100;
+  els.rangeSlider.style.setProperty('--pct', pct + '%');
+  // open the custom panel automatically for non-preset values
+  if(!isPreset) els.customRange.classList.add('open');
+  updateMeta();
+  if(pos && !fromSlider) startPolling(); // presets re-query at once; slider waits for release
+}
+els.rangePick.querySelectorAll('.rangebtn').forEach(b=>{
+  if(b.id === 'customBtn') return;
+  b.addEventListener('click', ()=>{ els.customRange.classList.remove('open'); setRange(Number(b.dataset.km)); });
+});
+// custom button toggles the slider panel
+els.customBtn.addEventListener('click', ()=>{
+  els.customRange.classList.toggle('open');
+  if(els.customRange.classList.contains('open')) setRange(Number(els.rangeSlider.value));
+});
+// slider drag: update label live, re-query on release (so we don't spam the API)
+els.rangeSlider.addEventListener('input', ()=> setRange(Number(els.rangeSlider.value), true));
+els.rangeSlider.addEventListener('change', ()=>{ if(pos) startPolling(); });
+setRange(RADIUS_KM); // reflect saved/default selection on load
+if(!PRESETS.includes(RADIUS_KM)) els.customRange.classList.add('open');
+
+els.locBtn.addEventListener('click', ()=>{
+  if(!navigator.geolocation){ promptManual('Geolocation not supported. Enter coordinates:'); return; }
+  els.locBtn.textContent = 'Locating…';
+  navigator.geolocation.getCurrentPosition(
+    p=>start(p.coords.latitude, p.coords.longitude),
+    err=>{
+      els.locBtn.textContent = 'Use my location';
+      promptManual('Location blocked. Enter coordinates manually (lat, lon):');
+    },
+    {enableHighAccuracy:false, timeout:10000, maximumAge:60000}
+  );
+});
+els.manualBtn.addEventListener('click', ()=>promptManual('Enter coordinates (lat, lon):'));
+function promptManual(msg){
+  const v = prompt(msg, '52.37, 4.90');
+  if(!v) return;
+  const m = v.split(',').map(s=>parseFloat(s.trim()));
+  if(m.length===2 && !isNaN(m[0]) && !isNaN(m[1])) start(m[0], m[1]);
+  else promptManual('Invalid. Use format: lat, lon');
+}
+
+/* ---- address search via Photon (Komoot, free, no key, CORS-friendly) ---- */
+let geoTimer = null, geoSeq = 0;
+els.addrInput.addEventListener('input', ()=>{
+  const q = els.addrInput.value.trim();
+  clearTimeout(geoTimer);
+  if(q.length < 3){ els.addrResults.innerHTML = ''; els.addrStatus.textContent = ''; return; }
+  els.addrStatus.className = 'keystatus busy';
+  els.addrStatus.textContent = 'Searching…';
+  geoTimer = setTimeout(()=>geocode(q), 400); // debounce typing
+});
+els.addrInput.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){ clearTimeout(geoTimer); const q=els.addrInput.value.trim(); if(q.length>=3) geocode(q); }
+});
+
+async function geocode(q){
+  const seq = ++geoSeq;
+  const url = 'https://photon.komoot.io/api/?limit=6&q=' + encodeURIComponent(q);
+  try{
+    const r = await fetch(url);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data = await r.json();
+    if(seq !== geoSeq) return; // a newer search superseded this one
+    renderResults((data.features || []).map(featureToResult));
+  }catch(e){
+    if(seq !== geoSeq) return;
+    els.addrResults.innerHTML = '';
+    els.addrStatus.className = 'keystatus bad';
+    els.addrStatus.textContent = 'Search failed — try again or use coordinates.';
+  }
+}
+
+// turn a Photon GeoJSON feature into {lat, lon, primary, rest}
+function featureToResult(f){
+  const p = f.properties || {};
+  const [lon, lat] = (f.geometry && f.geometry.coordinates) || [];
+  const primary = p.name || p.street || p.city || 'Unknown';
+  const parts = [];
+  if(p.housenumber && p.street) parts.push(`${p.street} ${p.housenumber}`);
+  else if(p.street && p.street !== primary) parts.push(p.street);
+  if(p.district && p.district !== primary) parts.push(p.district);
+  if(p.city && p.city !== primary) parts.push(p.city);
+  if(p.state) parts.push(p.state);
+  if(p.country) parts.push(p.country);
+  return {lat, lon, primary, rest: parts.join(', ')};
+}
+
+function renderResults(list){
+  els.addrResults.innerHTML = '';
+  list = list.filter(r => isFinite(r.lat) && isFinite(r.lon));
+  if(!list.length){
+    els.addrStatus.className = 'keystatus';
+    els.addrStatus.textContent = 'No matches.';
+    return;
+  }
+  els.addrStatus.textContent = '';
+  list.forEach(item=>{
+    const el = document.createElement('div');
+    el.className = 'result';
+    el.tabIndex = 0;
+    el.innerHTML = `<b>${escapeHtml(item.primary)}</b>` + (item.rest ? `<span>${escapeHtml(item.rest)}</span>` : '');
+    const pick = ()=>start(item.lat, item.lon, item.primary);
+    el.addEventListener('click', pick);
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); }});
+    els.addrResults.appendChild(el);
+  });
+}
+
+els.refreshBtn.addEventListener('click', fetchFlights);
+
+/* ============================================================
+   fullscreen
+   ============================================================ */
+function enterFS(){
+  els.stage.classList.add('fs');
+  if(els.stage.requestFullscreen) els.stage.requestFullscreen().catch(()=>{});
+}
+function exitFS(){
+  els.stage.classList.remove('fs');
+  if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+}
+els.fsBtn.addEventListener('click', enterFS);
+els.exitBtn.addEventListener('click', exitFS);
+document.addEventListener('fullscreenchange', ()=>{
+  if(!document.fullscreenElement){
+    els.stage.classList.remove('fs');
+    if(viewMode === 'radar') closeRadar();
+  }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){ els.stage.classList.remove('fs'); if(viewMode==='radar') closeRadar(); }
+});
+
+/* ============================================================
+   radar fullscreen — you at the center, aircraft as blips
+   ============================================================ */
+const rctx = els.radarCv.getContext('2d');
+
+function sizeRadar(){
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const w = els.radarScreen.clientWidth, h = els.radarScreen.clientHeight;
+  els.radarCv.width = w * dpr;
+  els.radarCv.height = h * dpr;
+  rctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+let radarRouteTimer = null;
+function prefetchRadarRoutes(){
+  if(viewMode !== 'radar' || !pos) return;
+  // fetch routes for the nearest ~12 in-range flights so their tags fill in
+  const inRange = flights
+    .filter(f=>f.lat!=null && f.lon!=null)
+    .map(f=>({f, d: f._d!=null ? f._d : distKm(pos.lat,pos.lon,f.lat,f.lon)}))
+    .filter(o=>o.d <= RADIUS_KM)
+    .sort((a,b)=>a.d-b.d)
+    .slice(0,12);
+  for(const o of inRange) ensureRoute(o.f);
+}
+function openRadar(){
+  if(!pos){ return; } // need a location first
+  viewMode = 'radar';
+  els.radarScreen.classList.add('open');
+  if(els.radarScreen.requestFullscreen) els.radarScreen.requestFullscreen().catch(()=>{});
+  sizeRadar();
+  prefetchRadarRoutes();
+  if(radarRouteTimer) clearInterval(radarRouteTimer);
+  radarRouteTimer = setInterval(prefetchRadarRoutes, 4000);
+  startLoop();
+}
+function closeRadar(){
+  viewMode = 'board';
+  els.radarScreen.classList.remove('open');
+  if(radarRouteTimer){ clearInterval(radarRouteTimer); radarRouteTimer = null; }
+  if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+  // hand control back to the board loop
+  stopLoop(); startLoop();
+}
+els.radarBtn.addEventListener('click', openRadar);
+els.soundBtn.addEventListener('click', ()=> setSound(!soundOn));
+setSound(soundOn); // reflect saved preference on load
+els.radarExit.addEventListener('click', closeRadar);
+// tap the clock to switch between local time and UTC/zulu
+els.radarCv.addEventListener('click', (e)=>{
+  if(!clockHit) return;
+  const rect = els.radarCv.getBoundingClientRect();
+  const x = e.clientX - rect.left, y = e.clientY - rect.top;
+  if(x >= clockHit.x && x <= clockHit.x+clockHit.w && y >= clockHit.y && y <= clockHit.y+clockHit.h){
+    clockUTC = !clockUTC;
+    localStorage.setItem('fw_clock', clockUTC ? 'utc' : 'local');
+  }
+});
+window.addEventListener('resize', ()=>{ if(viewMode==='radar') sizeRadar(); });
+
+// bearing (deg, 0=N) and distance (km) from your position to a point
+function bearingTo(lat1, lon1, lat2, lon2){
+  const toR=x=>x*Math.PI/180, toD=x=>x*180/Math.PI;
+  const dLon=toR(lon2-lon1);
+  const y=Math.sin(dLon)*Math.cos(toR(lat2));
+  const x=Math.cos(toR(lat1))*Math.sin(toR(lat2))-Math.sin(toR(lat1))*Math.cos(toR(lat2))*Math.cos(dLon);
+  return (toD(Math.atan2(y,x))+360)%360;
+}
+
+const RADAR_GREEN = '#4dff8a';
+// altitude -> RGB triple (ATC convention: low = amber, climbing through = lime, cruising = green)
+// thresholds in metres. returns [r,g,b].
+function altColor(altM){
+  if(altM == null) return [120, 200, 160];      // unknown: muted green-grey
+  if(altM < 1500)  return [255, 176, 59];        // low / approach: amber
+  if(altM < 6000)  return [180, 230, 90];        // mid: lime
+  return [77, 255, 138];                          // cruising: radar green
+}
+function altRGBA(altM, a){ const [r,g,b] = altColor(altM); return `rgba(${r},${g},${b},${a})`; }
+function drawRadarFrame(){
+  const W = els.radarScreen.clientWidth, H = els.radarScreen.clientHeight;
+  const cx = W/2, cy = H/2;
+  const R = Math.min(W,H)/2 - 34;          // outer ring radius in px
+  rctx.clearRect(0,0,W,H);
+  rctx.fillStyle = '#02060a';
+  rctx.fillRect(0,0,W,H);
+
+  const G = (a)=>`rgba(77,255,138,${a})`;
+  const mono = 'ui-monospace,Menlo,Consolas,monospace';
+
+  // range rings
+  rctx.lineWidth = 1;
+  rctx.font = `11px ${mono}`;
+  rctx.textAlign = 'left';
+  const rings = 4;
+  for(let i=1;i<=rings;i++){
+    const rr = R*i/rings;
+    rctx.strokeStyle = G(i===rings?0.5:0.22);
+    rctx.beginPath(); rctx.arc(cx,cy,rr,0,2*Math.PI); rctx.stroke();
+    const km = Math.round(RADIUS_KM*i/rings);
+    rctx.fillStyle = G(0.45);
+    rctx.fillText(km+'km', cx+4, cy-rr+13);
+  }
+  // crosshair axes + N/E/S/W with degree ticks
+  rctx.strokeStyle = G(0.18);
+  rctx.beginPath();
+  rctx.moveTo(cx-R,cy); rctx.lineTo(cx+R,cy);
+  rctx.moveTo(cx,cy-R); rctx.lineTo(cx,cy+R);
+  rctx.stroke();
+  // tick marks every 30° around the outer ring
+  for(let deg=0; deg<360; deg+=30){
+    const a = deg*Math.PI/180;
+    const x1 = cx+Math.sin(a)*R, y1 = cy-Math.cos(a)*R;
+    const x2 = cx+Math.sin(a)*(R-6), y2 = cy-Math.cos(a)*(R-6);
+    rctx.strokeStyle = G(0.3); rctx.lineWidth = 1;
+    rctx.beginPath(); rctx.moveTo(x1,y1); rctx.lineTo(x2,y2); rctx.stroke();
+  }
+  rctx.fillStyle = G(0.6);
+  rctx.textAlign='center';
+  rctx.font = `bold 13px ${mono}`;
+  rctx.fillText('N', cx, cy-R-10);
+  rctx.fillText('S', cx, cy+R+18);
+  rctx.fillText('W', cx-R-14, cy+4);
+  rctx.fillText('E', cx+R+14, cy+4);
+
+  // sweep beam (gradient wedge trailing the line)
+  const trail = 0.5;
+  for(let k=0;k<14;k++){
+    const a = sweepAngle - k*trail/14;
+    rctx.strokeStyle = G(0.16*(1 - k/14));
+    rctx.lineWidth = 2;
+    rctx.beginPath();
+    rctx.moveTo(cx,cy);
+    rctx.lineTo(cx + Math.sin(a)*R, cy - Math.cos(a)*R);
+    rctx.stroke();
+  }
+  rctx.strokeStyle = RADAR_GREEN;
+  rctx.lineWidth = 2;
+  rctx.beginPath();
+  rctx.moveTo(cx,cy);
+  rctx.lineTo(cx + Math.sin(sweepAngle)*R, cy - Math.cos(sweepAngle)*R);
+  rctx.stroke();
+
+  // ---- center: YOU + coordinates ----
+  // small plus marker
+  rctx.strokeStyle = RADAR_GREEN; rctx.lineWidth = 1.5;
+  rctx.beginPath();
+  rctx.moveTo(cx-6,cy); rctx.lineTo(cx+6,cy);
+  rctx.moveTo(cx,cy-6); rctx.lineTo(cx,cy+6);
+  rctx.stroke();
+  rctx.fillStyle = RADAR_GREEN;
+  rctx.beginPath(); rctx.arc(cx,cy,2.5,0,2*Math.PI); rctx.fill();
+  // YOU label + coords just below center
+  rctx.textAlign = 'center';
+  rctx.font = `bold 11px ${mono}`;
+  rctx.fillStyle = G(0.9);
+  rctx.fillText('YOU', cx, cy+20);
+  rctx.font = `10px ${mono}`;
+  rctx.fillStyle = G(0.5);
+  const coords = pos ? `${pos.lat.toFixed(3)}, ${pos.lon.toFixed(3)}` : '';
+  rctx.fillText(coords, cx, cy+33);
+  if(lastLabel && !/^-?\d/.test(lastLabel)){ // show place name if it's not just coords
+    rctx.fillStyle = G(0.4);
+    rctx.fillText(lastLabel.slice(0,22).toUpperCase(), cx, cy+45);
+  }
+
+  // ---- blips ----
+  rctx.textAlign = 'left';
+  const placed = [];
+  const blips = [];
+  let nearest = null;
+  for(const f of flights){
+    if(f.lat==null || f.lon==null) continue;
+    const d = f._d!=null ? f._d : distKm(pos.lat,pos.lon,f.lat,f.lon);
+    if(d > RADIUS_KM) continue;
+    const brg = bearingTo(pos.lat,pos.lon,f.lat,f.lon);
+    const rr = (d/RADIUS_KM)*R;
+    const a = brg*Math.PI/180;
+    const bx = cx + Math.sin(a)*rr;
+    const by = cy - Math.cos(a)*rr;
+    let rel = (sweepAngle - a) % (2*Math.PI);
+    if(rel < 0) rel += 2*Math.PI;
+    const fresh = Math.max(0, 1 - rel/(Math.PI*0.7));
+    blips.push({f, bx, by, fresh, d, brg});
+    if(!nearest || d < nearest.d) nearest = {f, d};
+  }
+  // show persistent detail tags for the nearest contacts (independent of the sweep).
+  // scale the count with range: more tags when zoomed in (few planes), fewer at wide
+  // ranges (lots of planes) so the scope stays readable.
+  const DETAIL_COUNT = RADIUS_KM <= 25 ? 12 : RADIUS_KM <= 60 ? 8 : RADIUS_KM <= 120 ? 6 : 4;
+  const byDist = [...blips].sort((p,q)=>p.d - q.d);
+  for(let i=0;i<byDist.length;i++) byDist[i].showDetail = i < DETAIL_COUNT;
+
+  // draw order: non-detailed first, then detailed last so the nearest tags
+  // win the de-clutter test and never get suppressed by a distant callsign
+  blips.sort((p,q)=>{
+    if(p.showDetail !== q.showDetail) return p.showDetail ? 1 : -1;
+    return p.fresh - q.fresh;
+  });
+  for(const bl of blips){
+    const {f, bx, by, fresh, d} = bl;
+    const glow = 0.45 + 0.55*fresh;
+    const altM = f.alt!=null ? Math.round(f.alt*0.3048) : null;
+    // speed leader line (longer = faster); points in heading direction
+    if(f.heading!=null && f.gs!=null){
+      const ha = f.heading*Math.PI/180;
+      const len = 6 + Math.min(22, (f.gs||0)/25); // scale knots to px
+      rctx.strokeStyle = altRGBA(altM, glow*0.9);
+      rctx.lineWidth = 1.5;
+      rctx.beginPath();
+      rctx.moveTo(bx,by);
+      rctx.lineTo(bx+Math.sin(ha)*len, by-Math.cos(ha)*len);
+      rctx.stroke();
+    }
+    // blip square, colored by altitude band
+    rctx.fillStyle = altRGBA(altM, glow);
+    rctx.fillRect(bx-3, by-3, 6, 6);
+
+    // ---- label: persistent full tag for nearest contacts, callsign for the rest ----
+    const cs = (f.callsign||'').trim() || (f.icao||'').toUpperCase().slice(0,6);
+    const altTxt = altM!=null ? (altM>=1000?(altM/1000).toFixed(1)+'km':altM+'m') : '';
+    const kmh = f.gs!=null ? Math.round(f.gs*1.852) : null;
+    const detailed = bl.showDetail; // stays visible regardless of sweep position
+    // label brightness: steady floor so tags don't vanish, small lift when freshly swept
+    const tagA = 0.7 + 0.3*fresh;
+    let lines;
+    if(detailed){
+      lines = [cs];
+      if(f.route && (f.route.origin || f.route.dest)) lines.push(`${f.route.origin||'?'}\u2192${f.route.dest||'?'}`);
+      const l3 = [f.type, altTxt].filter(Boolean).join(' ');
+      if(l3) lines.push(l3);
+      if(kmh!=null) lines.push(`${kmh} km/h  ${Math.round(d)}km`);
+    }else{
+      lines = [cs];
+    }
+    const lw = Math.max(...lines.map(s=>s.length))*6.0 + 4;
+    const lh = lines.length*9 + 3;
+    const lx = bx+8, ly = by-4;
+    const box = {x:lx-2, y:ly-9, w:lw, h:lh};
+    const clash = placed.some(p => box.x < p.x+p.w && box.x+box.w > p.x && box.y < p.y+p.h && box.y+box.h > p.y);
+    if(!clash){
+      rctx.font = detailed ? `bold 10px ${mono}` : `10px ${mono}`;
+      lines.forEach((ln,i)=>{
+        rctx.fillStyle = i===0 ? `rgba(200,255,220,${tagA})` : G(0.55*tagA);
+        if(i>0) rctx.font = `9px ${mono}`;
+        rctx.fillText(ln, lx, ly + i*9);
+      });
+      placed.push(box);
+    }
+  }
+
+  // ---- header (top-left stack) ----
+  rctx.fillStyle = RADAR_GREEN;
+  rctx.textAlign = 'left';
+  rctx.font = `bold 13px ${mono}`;
+  rctx.fillText(`${blips.length} CONTACTS`, 16, 26);
+  rctx.fillStyle = G(0.5);
+  rctx.font = `11px ${mono}`;
+  rctx.fillText(`RANGE ${RADIUS_KM} KM`, 16, 42);
+
+  // clock — local time, or UTC/zulu when tapped (kept on the left, clear of Close button)
+  const now = new Date();
+  let hh, mm, ss, suffix;
+  if(clockUTC){
+    hh = String(now.getUTCHours()).padStart(2,'0');
+    mm = String(now.getUTCMinutes()).padStart(2,'0');
+    ss = String(now.getUTCSeconds()).padStart(2,'0');
+    suffix = 'Z';
+  }else{
+    hh = String(now.getHours()).padStart(2,'0');
+    mm = String(now.getMinutes()).padStart(2,'0');
+    ss = String(now.getSeconds()).padStart(2,'0');
+    suffix = 'LCL';
+  }
+  const timeStr = `${hh}:${mm}:${ss}`;
+  rctx.fillStyle = RADAR_GREEN;
+  rctx.font = `bold 13px ${mono}`;
+  rctx.fillText(timeStr, 16, 60);
+  const tw = rctx.measureText(timeStr).width;
+  rctx.fillStyle = G(0.5);
+  rctx.font = `10px ${mono}`;
+  rctx.fillText(suffix, 16 + tw + 5, 60);
+  rctx.fillStyle = G(0.4);
+  rctx.font = `9px ${mono}`;
+  rctx.fillText('(tap to toggle)', 16 + tw + 5 + rctx.measureText(suffix).width + 8, 60);
+  // hit box for tapping the clock to switch local/UTC
+  clockHit = {x: 12, y: 48, w: tw + 90, h: 18};
+
+  // altitude color legend (below the header stack)
+  rctx.font = `10px ${mono}`;
+  const legend = [['LOW',[255,176,59]],['MID',[180,230,90]],['HIGH',[77,255,138]]];
+  let lgx = 16;
+  for(const [lbl,[r,g,b]] of legend){
+    rctx.fillStyle = `rgb(${r},${g},${b})`;
+    rctx.fillRect(lgx, 72, 8, 8);
+    rctx.fillStyle = G(0.55);
+    rctx.fillText(lbl, lgx+12, 80);
+    lgx += 18 + lbl.length*6.2;
+  }
+
+
+  // ---- nearest contact callout (bottom-left) ----
+  if(nearest){
+    const ncs = (nearest.f.callsign||'').trim() || (nearest.f.icao||'').toUpperCase().slice(0,6);
+    rctx.textAlign = 'left';
+    rctx.fillStyle = G(0.5);
+    rctx.font = `11px ${mono}`;
+    rctx.fillText('NEAREST', 16, H-30);
+    rctx.fillStyle = RADAR_GREEN;
+    rctx.font = `bold 13px ${mono}`;
+    rctx.fillText(`${ncs}  ${nearest.d.toFixed(1)} km`, 16, H-14);
+  }
+
+  // ---- empty state ----
+  if(blips.length === 0){
+    rctx.textAlign = 'center';
+    rctx.fillStyle = G(0.55);
+    rctx.font = `bold 14px ${mono}`;
+    rctx.fillText('NO CONTACTS IN RANGE', cx, cy - R - 24 < 30 ? 60 : cy + R + 40);
+  }
+}
+
+/* ============================================================
+   animated hero preview on the landing page
+   ============================================================ */
+const hctx = els.heroCv.getContext('2d');
+hctx.imageSmoothingEnabled = false;
+const HERO_DEMO = [
+  {name:'KLM',route:'AMS-LHR',type:'B738',d:6,col:'#4a8fe2',logo:'KLM',alt:'10.1KM',spd:842,trk:'WNW',vs:'+0.0'},
+  {name:'Lufthansa',route:'FRA-VIE',type:'A21N',d:14,col:'#f5c518',logo:'DLH',alt:'11.3KM',spd:932,trk:'ESE',vs:'-2.1'},
+  {name:'Emirates',route:'DXB-AMS',type:'A388',d:9,col:'#e23b3b',logo:'UAE',alt:'9.4KM',spd:889,trk:'NW',vs:'+3.4'},
+];
+let heroIdx = 0, heroPhase = 0, heroLast = 0, heroFade = 1, heroRaf = null;
+function heroDraw(d, alpha){
+  drawOn(hctx, ()=>{
+    clear();
+    if(alpha <= 0) return;
+    const accent = dim(d.col, alpha), white = dim('#ffffff', alpha), grey = dim('#b8bdc7', alpha);
+    drawLogo(d.logo, 2, 4, accent);
+    text(d.name, 30, 3, accent, [30, 128]);
+    text(d.route, 30, 13, white);
+    text(`${d.type} ${d.d}KM`, 30, 23, grey);
+    text(`A:${d.alt} S:${d.spd}KMH`, 3, 44, white, [0,128]);
+    text(`TRK:${d.trk} VS:${d.vs}M/S`, 3, 54, white, [0,128]);
+  });
+}
+// run a draw callback with px()/text()/clear() targeting a given context
+function drawOn(targetCtx, fn){ const prev = drawCtx; drawCtx = targetCtx; fn(); drawCtx = prev; }
+function heroLoop(ts){
+  const dt = Math.min(80, ts - heroLast); heroLast = ts;
+  heroPhase += dt;
+  // 3.2s per demo flight: fade in (0.4s), hold, fade out (0.4s)
+  const T = 3200, fin = 400, fout = 400;
+  if(heroPhase >= T){ heroPhase = 0; heroIdx = (heroIdx+1) % HERO_DEMO.length; }
+  if(heroPhase < fin) heroFade = heroPhase / fin;
+  else if(heroPhase > T - fout) heroFade = (T - heroPhase) / fout;
+  else heroFade = 1;
+  heroDraw(HERO_DEMO[heroIdx], Math.max(0, Math.min(1, heroFade)));
+  heroRaf = requestAnimationFrame(heroLoop);
+}
+function startHero(){ if(!heroRaf){ heroLast = performance.now(); heroRaf = requestAnimationFrame(heroLoop); } }
+function stopHero(){ if(heroRaf){ cancelAnimationFrame(heroRaf); heroRaf = null; } }
+startHero();
+
+/* boot screen */
+renderMessage(['SKYHOUND'], '#cdd2da');
+
+/* resume the last location if we have one — skip the setup screen */
+(function resumeSaved(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('fw_loc') || 'null');
+    if(saved && isFinite(saved.lat) && isFinite(saved.lon)){
+      stopHero();
+      start(saved.lat, saved.lon, saved.label);
+    }
+  }catch(e){ /* fall through to setup screen */ }
+})();
+
+</script>
+</body>
+</html>

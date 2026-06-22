@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="-10%" r="90%">
+      <stop offset="0%" stop-color="#0d2018"/>
+      <stop offset="55%" stop-color="#07080b"/>
+      <stop offset="100%" stop-color="#04060a"/>
+    </radialGradient>
+    <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.3" fill="#36d07a" opacity="0.10"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- brand mark tile -->
+  <g transform="translate(96,150)">
+    <rect width="120" height="120" rx="28" fill="#040608" stroke="#36d07a" stroke-opacity="0.35" stroke-width="2"/>
+    <g fill="#36d07a">
+      <circle cx="26" cy="26" r="5"/><circle cx="46" cy="26" r="5"/><circle cx="66" cy="26" r="5"/><circle cx="86" cy="26" r="5"/>
+    </g>
+    <path d="M94 92 88 70l9-9c3.8-3.8 5-8.4 3.6-9.9s-6.1-.2-9.9 3.6l-9 9-22-5.4c-1.3-.3-2.3.2-2.9 1.2l-.8 1.4c-.6 1.2-.2 2.7.8 3.5L74 76l-5 7.7h-7.6l-2.5 2.5 7.5 5 5 7.6 2.5-2.5v-7.6L88 86l9.4 11.5c.8 1 2.1 1.2 3.3.8l1.4-.8c1-.6 1.6-1.6 1.2-2.9z" fill="#eef2f6"/>
+  </g>
+
+  <!-- wordmark + tagline -->
+  <text x="248" y="200" font-family="Helvetica,Arial,sans-serif" font-size="86" font-weight="800" fill="#ffffff" letter-spacing="-2">Skyhound</text>
+  <text x="250" y="250" font-family="Helvetica,Arial,sans-serif" font-size="32" fill="#9aa0ab">Live aircraft overhead, on a retro LED board</text>
+
+  <!-- mini board mock -->
+  <g transform="translate(96,330)">
+    <rect width="1008" height="210" rx="18" fill="#040406" stroke="#1b1e24" stroke-width="2"/>
+    <text x="40" y="78" font-family="monospace" font-size="46" font-weight="700" fill="#f5c518" letter-spacing="2">LUFTHANSA</text>
+    <text x="560" y="78" font-family="monospace" font-size="46" font-weight="700" fill="#5a606b" letter-spacing="2">2/9</text>
+    <text x="40" y="128" font-family="monospace" font-size="46" font-weight="700" fill="#ffffff" letter-spacing="2">FRA&#8594;VIE</text>
+    <text x="40" y="190" font-family="monospace" font-size="34" font-weight="700" fill="#ffffff" letter-spacing="1">A:11.3KM  S:1056KMH  TRK:NW</text>
+  </g>
+
+  <text x="600" y="600" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="26" font-style="italic" fill="#454b54">If you can hear it, it's probably on here.</text>
+</svg>
