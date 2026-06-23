@@ -1,1 +1,1 @@
-Hello, wecome to the readme
+Hello, welcome to the readme
